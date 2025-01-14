@@ -1,0 +1,188 @@
+<div>
+  <!-- <bh-card focusable="false" heading='Cases' border=true actionMenu='{"menuItems":{"itemGroups":[{"items":[{"label":"Contributing Cases","value":"tearsheet--bh-menu--item-Contributing Cases"},{"label":"All Cases","value":"tearsheet--bh-menu--item-All Cases"}],"divider":false}]}}' 
+  header-actions='[{"buttonKey":"card-add-button","buttonIcon": "add","buttonType":"primary","buttonLabel":"Add","buttonDisable":false}]'> -->
+ 
+ 
+<bh-card class="container-fluid">
+    <div class="container">
+        <bh-title-wrapper id="sb--title-wrapper" type="title" header="Booster Gas Compressor 1" subtext="Dashboard" ></bh-title-wrapper>
+  </div>
+</bh-card>
+<br>
+
+<bh-card class="base-card">
+  <div class="health">
+    <bh-card class="healthcard" focusable="false" heading=' Health Index - {{donutPriority}}' border=true
+        header-actions='[{"buttonType":"ghost","buttonLabel":"View history", "buttonIcon":"forum", "iconColor": "primary"}]'>
+  
+        <div class="healthcare">
+            <div class="Eventtype">
+                <p>Event Type</p>
+                <p class="answers">{{donutCasename}}</p>
+            </div>
+            <div class="Createdon">
+                <p>Created On</p>
+                <p class="answers">{{donutOpendate}}</p>
+  
+            </div>
+            <div class="LastUpdatedOn">
+                <p>Last Updated On</p>
+                <p class="answers">&ensp;--&ensp;</p>
+  
+            </div>
+            <div class="Category">
+                <p>Category</p>
+                <p class="answers">General</p>
+  
+            </div>
+            <div class="Status">
+                <p>Status</p>
+                <p class="answers">{{donutStatus}}</p>
+  
+            </div>
+        </div>
+  
+    </bh-card>
+    <div></div>
+    <img class="priority" src={{imgSrc}} alt="">
+    <!-- <img class="history" src="assets\Icon.png" alt=""> -->
+  </div>
+  
+  <div class="diagrams">
+    <bh-card class="card" focusable="false" heading='Schematics' border=true>
+        <img class="img" src="assets/Visual.jpg" alt="not there">
+  
+        <div class="headers">
+            <div>
+                <p class="head">Mass Flow Rate</p>
+                <p class="body">200 Kg/H</p>
+            </div>
+            <div>
+                <p class="head">Temperature</p>
+                <p class="body">18° C</p>
+            </div>
+            <div>
+                <p class="head">Inlet Pressure</p>
+                <p class="body">1100 PSI</p>
+            </div>
+            <div>
+                <p class="head">Outlet Pressure</p>
+                <p class="body">2000 PSI</p>
+            </div>
+        </div>
+  
+    </bh-card>
+    <bh-card class="card " focusable="false" heading='Insights' border=true header-actions='[{"buttonType":"ghost"}]'>
+        <div class="insight">
+            <div class="design">
+                <bh-donut-chart  [data]="dataInsights" [option]="optionsInsights" height="120" width="120"
+                    legend-layout='horizontal' [label]="labelInsights"></bh-donut-chart>
+            </div>
+  
+        </div>
+  
+    </bh-card>
+  
+    <bh-card class="card" focusable="false" heading='Total Cases' border=true header-actions='[{"buttonType":"ghost"}]'>
+        <div class="design">
+            <bh-donut-chart [data]="dataTotal" [option]="optionsTotal" height="120" width="120" legend-layout='horizontal'
+                [label]='labelTotal'></bh-donut-chart>
+        </div>
+        
+  
+    </bh-card>
+  
+    <bh-card class="card" focusable="false" heading='Contributing Cases' border=true header-actions='[{"buttonType":"ghost"}]'>
+        <div class="design">
+            <bh-donut-chart [data]='dataContri' [option]='optionsContri' height="120" width="120" legend-layout='horizontal'
+                [label]='labelContri'></bh-donut-chart>
+        </div>
+        
+    </bh-card>
+</div>
+<div>
+  <bh-tabular-list
+    id="sb--bh-tabular-list--small"
+    refresh="false"
+    noDataAvailable="No data available"
+    header='{"label":"Cases","actionMenu":{"menuItems":{"itemGroups":[{"items":[{"label":"Contributing Cases","value":"tearsheet--bh-menu--item-Contributing Cases"},{"label":"All Cases","value":"tearsheet--bh-menu--item-All Cases"}],"divider":false}]}},"ctas":{"type":"primary","label":"Add","key":"example-bhtl--cta-primary"}}'
+    [schema]="tableSchema"
+    [payload]="tableData"
+    [option]='tabularListOption'
+    (bhEventChange)="filterCases($event)" (bhEventCtaClick)="addCase($event)" (bhEventSelected)="selectEditOrDelete($event)"
+  >
+  </bh-tabular-list>
+</div>
+
+<div>
+  <bh-modal
+  id="sb--modal"
+  header="Enter Case Details"
+  subheader=""
+  width="large"
+  [ctas]="modalCtas"
+  dismissible="true"
+  [isOpen]="isOpen"
+  (bhEventClose)="closeModal()"
+  (bhEventCtaClick)="selectSaveOrReset($event)"
+  >
+
+  <div class="bh-grid">
+
+    <div class="bh-col-4_md-4_sm-4">
+      <bh-text-input type=text id='text-input-co2' required fluid label="Case Name" [isError]="errorCasename" [message]="validCasename" placeholder="for e.g. Case 1" maxlength="60" [(ngModel)]="casename" (bhEventInput)="bhEventInput($event, 'casename')"></bh-text-input>
+    </div>  
+
+    <div class="bh-col-4_md-4_sm-4">
+       <bh-dropdown style="display: block;" isRequired=true (bhEventSelected)="bhEventSelectedDropdown($event)"  [(ngModel)]="priority" menu-items='{"itemGroups":[{"items":[{"label":"High", "value":"tearsheet--bh-menu--item-1-high"},{"label":"Medium","value":"tearsheet--bh-menu--item-1-medium"},{"label":"Low","value":"tearsheet--bh-menu--item-1-low"}],"divider":false}]}' width="inherit" searchable="false" unselectable="false" multiselect="false" searchMode="contains" selectall="false" label="Priority" placeholder="Select" showall-label="all" flip-offset=50></bh-dropdown>
+    </div>
+
+    <div class="bh-col-4_md-4_sm-4">
+      <bh-text-input type=text undefined required dundefine readonly=false label="Type" placeholder="" value="General" maxlength="60" pattern="undefined" disabled="true" false false false false></bh-text-input>
+    </div>
+  </div>
+  
+  <div class="bh-grid">
+    <div class="bh-col-4_md-4_sm-4">
+      <bh-dropdown (bhEventSelected)="bhEventSelectedDropdown($event)" isRequired=true [(ngModel)]="status" menu-items='{"itemGroups":[{"items":[{"label":"Open","value":"tearsheet--bh-menu--item-1-open"},{"label":"Closed","value":"tearsheet--bh-menu--item-1-closed"}],"divider":false}]}' width="inherit" searchable="false" unselectable="false" multiselect="false" searchMode="contains" label="Status" placeholder="Select" inline="false"   showall-label="all" flip-offset=50></bh-dropdown>
+    </div>
+
+    <div class="bh-col-4_md-4_sm-4">
+       <bh-date-picker label='Open Date' isRequired=true (bhEventChange)="dateOrCheckbox($event, 'date')" [(ngModel)]="opendate" [value]="opendate" readonly=false invalid=false required=false error-message='Error message' disable-helper='false' [reset]='reset' disable-user-input='false' disabled='false' ></bh-date-picker>
+      <br>
+    </div>
+
+    <div class="bh-col-4_md-4_sm-4">
+      <!-- <p>Contributing case</p> -->
+      <bh-checkbox label="Contributing Case" (bhEventChange)="dateOrCheckbox($event, 'checkbox')" message="" [(ngModel)]="editContributing" [isChecked]="editContributing" value="Contributing Case" false false false false style="padding: 10px;"></bh-checkbox>
+    </div>
+  </div>
+  <br>
+  <div class="bh-grid">
+    <div class="bh-col-12">
+      <bh-title-wrapper type="subtitle" header="Provide Insights" subtext=""></bh-title-wrapper>
+    </div>
+  </div>
+  <div class="bh-grid">
+    <div class="bh-col-3_sm-3_sm-3">
+      <bh-text-input type=number (bhEventInput)="bhEventInput($event, 'co2')" [isError]="errorCo2" [message]="validCo2" required [(ngModel)]="co2" undefined fluid undefined small readonly=false label="CO2" placeholder="" value="" message="" maxlength="5" false false false false></bh-text-input>
+    </div>
+
+    <div class="bh-col-3_sm-3_sm-3">
+      <bh-text-input type=number (bhEventInput)="bhEventInput($event, 'h2o')" [isError]="errorH2o" [message]="validH2o" required [(ngModel)]="h2o" undefined fluid undefined small readonly=false label="H2O" placeholder="" value="" message="" maxlength="5" false false false false></bh-text-input>
+    </div>
+
+    <div class="bh-col-3_sm-3_sm-3">
+      <bh-text-input type=number (bhEventInput)="bhEventInput($event, 'o2')" [isError]="errorO2" [message]="validO2" required [(ngModel)]="o2" undefined fluid undefined small readonly=false label="O2" placeholder="" value="" message="" maxlength="5" false false false false></bh-text-input>
+    </div>
+
+    <div class="bh-col-3_sm-3_sm-3">
+      <bh-text-input type=number (bhEventInput)="bhEventInput($event, 'n2')" [isError]="errorN2" [message]="validN2" [(ngModel)]="n2" required undefined fluid undefined small readonly=false label="N2" placeholder="" value="" message="" maxlength="5" false false false false></bh-text-input>
+    </div>
+  </div>
+</bh-modal>
+</div>
+
+
+</bh-card>
+
