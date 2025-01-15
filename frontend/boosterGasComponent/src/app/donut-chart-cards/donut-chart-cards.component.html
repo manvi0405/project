@@ -1,0 +1,52 @@
+<div class="diagrams">
+    <bh-card class="card" focusable="false" heading='Schematics' border=true>
+        <img class="img" src="assets/Visual.jpg" alt="not there">
+  
+        <div class="headers">
+            <div>
+                <p class="head">Mass Flow Rate</p>
+                <p class="body">200 Kg/H</p>
+            </div>
+            <div>
+                <p class="head">Temperature</p>
+                <p class="body">18° C</p>
+            </div>
+            <div>
+                <p class="head">Inlet Pressure</p>
+                <p class="body">1100 PSI</p>
+            </div>
+            <div>
+                <p class="head">Outlet Pressure</p>
+                <p class="body">2000 PSI</p>
+            </div>
+        </div>
+  
+    </bh-card>
+    <bh-card class="card" focusable="false" heading='Insights' border=true header-actions='[{"buttonType":"ghost"}]'>
+        <div class="insight">
+            <div class="design">
+                <bh-donut-chart  [data]="dataInsights" [option]="optionsInsights" height="120" width="120"
+                    legend-layout='horizontal' [label]="labelInsights"></bh-donut-chart>
+            </div>
+  
+        </div>
+  
+    </bh-card>
+  
+    <bh-card class="card" focusable="false" heading='Total Cases' border=true header-actions='[{"buttonType":"ghost"}]'>
+        <div class="design">
+            <bh-donut-chart [data]="dataTotal" [option]="optionsTotal" height="120" width="120" legend-layout='horizontal'
+                [label]='labelTotal'></bh-donut-chart>
+        </div>
+        
+  
+    </bh-card>
+  
+    <bh-card class="card" focusable="false" heading='Contributing Cases' border=true header-actions='[{"buttonType":"ghost"}]'>
+        <div class="design">
+            <bh-donut-chart [data]='dataContri' [option]='optionsContri' height="120" width="120" legend-layout='horizontal'
+                [label]='labelContri'></bh-donut-chart>
+        </div>
+        
+    </bh-card>
+</div>

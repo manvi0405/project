@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError, Observable, retry, tap, throwError } from 'rxjs';
-
+import { HttpClient } from '@angular/common/http';
 
 
 @Injectable({
@@ -14,20 +12,14 @@ export class AppserviceService {
 
   baseURL: String = 'http://localhost:3000'
   
-  getInsights(){
-    return this.http.get(this.baseURL+'/api/fetchinsights')
-  }
 
   getContri(){
-    return this.http.get(this.baseURL+'/api/fetchContri')
+    return this.http.get(this.baseURL+'/api/fetchContri'); 
   }
 
   getAll(){
-    // console.log("hiiii")
     return this.http.get(this.baseURL+'/api/fetchAll')
   }
-
-
 
   validateCasename(casename: string){
     console.log("service validate casename")
@@ -53,7 +45,7 @@ export class AppserviceService {
 
   postCases(value: any){
     console.log('post data services')
-    return this.http.post(this.baseURL+'/api/postCases', value)
+    return this.http.post(this.baseURL+'/api/postCases', value);
   }
 
   putCases(id: number, value: any){
@@ -66,4 +58,23 @@ export class AppserviceService {
     return this.http.delete(this.baseURL+`/api/deleteCases/${id}`)
   }
 
+  //mock functions for testing
+  // add(a: number, b: number){
+  //   return a+b;
+  // }
+
+  // subtract(a: number, b: number){
+  //   return a-b;
+  // }
+
+  // multiply(a: number, b: number){
+  //   return a*b;
+  // }
+
+  // divide(a: number, b: number){
+  //   if(b===0){
+  //     throw new Error('Cannot divide by zero')
+  //   }
+  //   return a/b;
+  // }
 }

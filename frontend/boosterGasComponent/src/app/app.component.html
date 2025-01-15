@@ -1,8 +1,4 @@
 <div>
-  <!-- <bh-card focusable="false" heading='Cases' border=true actionMenu='{"menuItems":{"itemGroups":[{"items":[{"label":"Contributing Cases","value":"tearsheet--bh-menu--item-Contributing Cases"},{"label":"All Cases","value":"tearsheet--bh-menu--item-All Cases"}],"divider":false}]}}' 
-  header-actions='[{"buttonKey":"card-add-button","buttonIcon": "add","buttonType":"primary","buttonLabel":"Add","buttonDisable":false}]'> -->
- 
- 
 <bh-card class="container-fluid">
     <div class="container">
         <bh-title-wrapper id="sb--title-wrapper" type="title" header="Booster Gas Compressor 1" subtext="Dashboard" ></bh-title-wrapper>
@@ -12,44 +8,11 @@
 
 <bh-card class="base-card">
   <div class="health">
-    <bh-card class="healthcard" focusable="false" heading=' Health Index - {{donutPriority}}' border=true
-        header-actions='[{"buttonType":"ghost","buttonLabel":"View history", "buttonIcon":"forum", "iconColor": "primary"}]'>
-  
-        <div class="healthcare">
-            <div class="Eventtype">
-                <p>Event Type</p>
-                <p class="answers">{{donutCasename}}</p>
-            </div>
-            <div class="Createdon">
-                <p>Created On</p>
-                <p class="answers">{{donutOpendate}}</p>
-  
-            </div>
-            <div class="LastUpdatedOn">
-                <p>Last Updated On</p>
-                <p class="answers">&ensp;--&ensp;</p>
-  
-            </div>
-            <div class="Category">
-                <p>Category</p>
-                <p class="answers">General</p>
-  
-            </div>
-            <div class="Status">
-                <p>Status</p>
-                <p class="answers">{{donutStatus}}</p>
-  
-            </div>
-        </div>
-  
-    </bh-card>
-    <div></div>
-    <img class="priority" src={{imgSrc}} alt="">
-    <!-- <img class="history" src="assets\Icon.png" alt=""> -->
+    <app-health-index-card></app-health-index-card>
   </div>
   
-  <div class="diagrams">
-    <bh-card class="card" focusable="false" heading='Schematics' border=true>
+  <!-- <div class="diagrams"> -->
+    <!-- <bh-card class="card" focusable="false" heading='Schematics' border=true>
         <img class="img" src="assets/Visual.jpg" alt="not there">
   
         <div class="headers">
@@ -72,7 +35,7 @@
         </div>
   
     </bh-card>
-    <bh-card class="card " focusable="false" heading='Insights' border=true header-actions='[{"buttonType":"ghost"}]'>
+    <bh-card class="card" focusable="false" heading='Insights' border=true header-actions='[{"buttonType":"ghost"}]'>
         <div class="insight">
             <div class="design">
                 <bh-donut-chart  [data]="dataInsights" [option]="optionsInsights" height="120" width="120"
@@ -98,9 +61,12 @@
                 [label]='labelContri'></bh-donut-chart>
         </div>
         
-    </bh-card>
-</div>
-<div>
+    </bh-card> -->
+
+    <app-donut-chart-cards></app-donut-chart-cards>
+<!-- </div> -->
+<br>
+<!-- <div>
   <bh-tabular-list
     id="sb--bh-tabular-list--small"
     refresh="false"
@@ -112,9 +78,9 @@
     (bhEventChange)="filterCases($event)" (bhEventCtaClick)="addCase($event)" (bhEventSelected)="selectEditOrDelete($event)"
   >
   </bh-tabular-list>
-</div>
-
-<div>
+</div> -->
+<app-tablular-list></app-tablular-list>
+<!-- <div>
   <bh-modal
   id="sb--modal"
   header="Enter Case Details"
@@ -134,7 +100,7 @@
     </div>  
 
     <div class="bh-col-4_md-4_sm-4">
-       <bh-dropdown style="display: block;" isRequired=true (bhEventSelected)="bhEventSelectedDropdown($event)"  [(ngModel)]="priority" menu-items='{"itemGroups":[{"items":[{"label":"High", "value":"tearsheet--bh-menu--item-1-high"},{"label":"Medium","value":"tearsheet--bh-menu--item-1-medium"},{"label":"Low","value":"tearsheet--bh-menu--item-1-low"}],"divider":false}]}' width="inherit" searchable="false" unselectable="false" multiselect="false" searchMode="contains" selectall="false" label="Priority" placeholder="Select" showall-label="all" flip-offset=50></bh-dropdown>
+       <bh-dropdown style="display: block;" isRequired=true (bhEventSelected)="bhEventSelectedDropdown($event)" [(ngModel)]="priority" menu-items='{"itemGroups":[{"items":[{"label":"High", "value":"tearsheet--bh-menu--item-1-high"},{"label":"Medium","value":"tearsheet--bh-menu--item-1-medium"},{"label":"Low","value":"tearsheet--bh-menu--item-1-low"}],"divider":false}]}' width="inherit" searchable="false" unselectable="false" multiselect="false" searchMode="contains" selectall="false" label="Priority" placeholder="Select" showall-label="all" flip-offset=50></bh-dropdown>
     </div>
 
     <div class="bh-col-4_md-4_sm-4">
@@ -153,7 +119,6 @@
     </div>
 
     <div class="bh-col-4_md-4_sm-4">
-      <!-- <p>Contributing case</p> -->
       <bh-checkbox label="Contributing Case" (bhEventChange)="dateOrCheckbox($event, 'checkbox')" message="" [(ngModel)]="editContributing" [isChecked]="editContributing" value="Contributing Case" false false false false style="padding: 10px;"></bh-checkbox>
     </div>
   </div>
@@ -181,7 +146,7 @@
     </div>
   </div>
 </bh-modal>
-</div>
+</div> -->
 
 
 </bh-card>

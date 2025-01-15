@@ -1,21 +1,26 @@
-import { NgModule } from "@angular/core";
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from "@angular/core";
 import { AppComponent } from "./app.component";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
-import { ComponentLibraryModule } from "@bh-digitalsolutions/ui-toolkit-angular/dist";
- 
+
 @NgModule({
-    declarations: [
-    ],
+    declarations: [],
     imports:[
-        AppComponent,
+        // AppComponent,
         FormsModule,
-        CommonModule,
-        // NgModule,
-        ComponentLibraryModule
+        CommonModule
+    ],
+    // exports:[
+    //     FormsModule,
+    //     CommonModule,
+    //     ComponentLibraryModule 
+    // ],
+    schemas:[
+        NO_ERRORS_SCHEMA,
+        CUSTOM_ELEMENTS_SCHEMA
     ]
 })
- 
+
 export class AppModule{
- 
+
 }

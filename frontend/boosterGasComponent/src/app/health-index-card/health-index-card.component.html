@@ -1,0 +1,31 @@
+<bh-card class="healthcard" focusable="false" heading=' Health Index - {{donutPriority}}' border=true
+        header-actions='[{"buttonType":"ghost","buttonLabel":"View history", "buttonIcon":"forum", "iconColor": "primary"}]'>
+  
+        <div class="healthcare">
+            <div class="Eventtype">
+                <p>Event Type</p>
+                <p class="answers">{{donutCasename}}</p>
+            </div>
+            <div class="Createdon">
+                <p>Created On</p>
+                <p class="answers">{{donutOpendate}}</p>
+  
+            </div>
+            <div class="LastUpdatedOn">
+                <p>Last Updated On</p>
+                <p class="answers">&ensp;--&ensp;</p>
+  
+            </div>
+            <div class="Category">
+                <p>Category</p>
+                <p class="answers">General</p>
+  
+            </div>
+            <div class="Status">
+                <p>Status</p>
+                <p class="answers">{{donutStatus}}</p>
+  
+            </div>
+        </div>
+        <img class="priority" src={{imgSrc}} alt="">
+    </bh-card>
