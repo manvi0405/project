@@ -1,0 +1,159 @@
+.base-card,
+.container-fluid {
+  width: 100%;
+  margin-left: 10px;
+
+}
+
+/* .diagrams {
+  display: flex;
+  width: 100%;
+  height: 258px;
+  gap: 10px;
+  } */
+
+/* .healthcard {
+  width: 100%;
+  height: 139px;
+  border-radius: 4px;
+  padding-left: 6px;
+}
+
+.healthcare {
+  display: flex;
+  gap: 144px;
+  color: #595959;
+  font-family: "Noto Sans";
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.answers {
+  display: flex;
+  justify-content: center;
+  font-family: "Noto Sans";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 6px;
+  align-items: center;
+  color: #121212;
+}
+.priority {
+  position: relative;
+  bottom: 120px;
+  left: 0.5%;
+} */
+
+/* this ss was for health card */
+
+/* ::ng-deep .bh-card--header-left-container {
+  display: flex;
+  align-items: center;
+  padding-left: 1%;
+} */
+
+.history {
+  position: relative;
+  margin-left: 35px;
+  bottom: 124px;
+  left: 89.5%;
+}
+
+/* .diagrams {
+  display: flex;
+  width: 100%;
+  height: 258px;
+  gap: 10px;
+} */
+
+.card {
+  width: 25%;
+  height: 238px;
+}
+
+/* .img {
+  width: 80%;
+  height: 60%;
+  padding-left: 10%;
+} */
+
+/* .insight{
+  width: 102%;
+  border: 1px solid red;
+  display: flex
+;
+  align-items: flex-start;
+} */
+
+/* .head {
+  font-family: "poppins";
+  font-weight: 450;
+  font-size: 11px;
+  line-height: 3px;
+}
+::ng-deep .body {
+  font-family: "poppins";
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 18px;
+} */
+/* ::ng-deep .bh-donut-chart-wrapper.horizontal {
+  display: flex;
+  width: 36%;
+}
+
+::ng-deep .bh-donut-chart--legend {
+  display: flex;
+  margin-top: 0;
+  flex-direction: column;
+  gap: 2%;
+} 
+
+::ng-deep .bh-donut-chart--legend-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+::ng-deep .bh-donut-chart--horizontal-layout-legend-group {
+  width: 65%;
+  display: flex;
+  justify-content: flex-start;
+  padding-left:  6%; ;
+}
+
+::ng-deep .bh-donut-chart--horizontal-layout-legend-group .bh-donut-chart--legend {
+  display: flex;
+  margin-top: 0;
+  flex-direction: column;
+  justify-content: center;
+}
+  
+.headers {
+  position: relative;
+    width: 105%;
+    height: 29px;
+    gap: 7px;
+    display: flex;
+    padding-bottom: 15px;
+}*/
+
+/* .bh-donut-chart-horizontal{
+  height: 120px;
+} */
+
+.design {
+  padding-top: 10px;
+}
+
+::ng-deep .bh-card--contained-content.border {
+  border-top: 1px solid var(--color-border-common-primary);
+  padding-top: 3px;
+}
+
+#sb--bh-tabular-list--small {
+  width: 100%;
+  height: 100%;
+}
+
