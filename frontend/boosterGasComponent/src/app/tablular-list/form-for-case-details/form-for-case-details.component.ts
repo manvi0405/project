@@ -37,7 +37,7 @@ export class FormForCaseDetailsComponent implements OnChanges {
   h2o!: number | null;
   o2!: number | null;
   n2!: number | null;
-  reset: boolean = false;
+  resetDate: boolean = false;
   editContributing!: boolean;
   errorCasename!: boolean;
   errorCo2!: boolean;
@@ -53,7 +53,7 @@ export class FormForCaseDetailsComponent implements OnChanges {
   tableAllOrContri: string = '';
   
   inputCases: any = {};
-
+  
   @Input() idForEdit: any = [];
   // @Input() isEdit!: boolean
   @Input() valuesToBeEnteredInFormForEdit: any = {}
@@ -61,24 +61,25 @@ export class FormForCaseDetailsComponent implements OnChanges {
   //to send data to the parent, the data is send using @Output
   @Input() formAddOrEdit: string = '';
 
-  @Output() editedCase = new EventEmitter<boolean>();
+  @Output() resetModal = new EventEmitter()
   @Output() onCloseModal = new EventEmitter<boolean>();
+  @Output() caseAddedOrEditedOrDelete = new EventEmitter();
   modalCtas: any = [
     { type: 'secondary', label: 'Reset', key: 'sb--modal-cta--secondary' },
     { type: 'primary', label: 'Save', key: 'sb--modal-cta--primary' },
   ];
 
   ngOnChanges(){
-    if(this.valuesToBeEnteredInFormForEdit){
-      this.selectEditOrDelete();
+    if(this.valuesToBeEnteredInFormForEdit){ 
+      this.editForm(); //this is run when there are changed in the valuesToBeEnteredInFormForEdit
     }
    }
 
-  casenameAndInsightsInputs(event: any, input: string){
+  async casenameAndInsightsInputs(event: any, input: string){
     console.log("inouevent", event);
     if (input === 'casename') {
       if (event.detail.trim() != '') {
-        ;
+        
         this.casename = event.detail;
         if(this.casename === this.validCasenameInEdit){//only for edit
           this.validCasename = ''
@@ -89,7 +90,7 @@ export class FormForCaseDetailsComponent implements OnChanges {
           //validate the input string
           this.validateAlphaNumeric(this.casename);
           try {
-            this.validCasename = this.validateCasename(this.casename); //await for the validation of casename to complete
+            this.validCasename = await this.validateCasename(this.casename); //await for the validation of casename to complete
             if (this.validCasename !== '') {
               this.validateForm();
             }
@@ -158,7 +159,7 @@ export class FormForCaseDetailsComponent implements OnChanges {
       input === 'date' &&
       this.opendate !== moment(event.detail).format('MM-DD-YYYY')
     ) {
-      this.reset = false;
+      this.resetDate = false;
       this.opendate = event.detail;
       this.validateForm();
     } else if (input === 'checkbox') {
@@ -186,11 +187,7 @@ export class FormForCaseDetailsComponent implements OnChanges {
     }
   }
 
-  selectEditOrDelete() {
-    // this.changeInsightsDonutData(event);
-    
-    console.log("selectEditOrDelete form: ", event);
-    
+  editForm() {
     if (this.formAddOrEdit === 'Edit') {
       this.casename = this.valuesToBeEnteredInFormForEdit.casename;
       this.validCasenameInEdit = this.valuesToBeEnteredInFormForEdit.validCasenameInEdit;
@@ -202,13 +199,12 @@ export class FormForCaseDetailsComponent implements OnChanges {
       this.o2 = this.valuesToBeEnteredInFormForEdit.o2;
       this.n2 = this.valuesToBeEnteredInFormForEdit.n2;
       this.editContributing = this.valuesToBeEnteredInFormForEdit.editContributing;
-      // this.saveForm()
-    } 
+    }
   }
 
-  saveForm(){
+  saveForm(){ //when save button is clicked for editing or saving
     //
-    this.reset = false;
+    this.resetDate = false;
     this.inputCases = {
       casename: this.casename,
       priority: this.priority,
@@ -231,13 +227,8 @@ export class FormForCaseDetailsComponent implements OnChanges {
           alert("Case Saved")
           this.onCloseModal.emit()
           this.resetForm();
-          // this.isOpen = false;
-          if (this.tableAllOrContri === 'contributing') {
-
-            //this.getContriCases();
-          } else {
-            //this.getAll();
-          }
+          //send output that the case is added
+          this.caseAddedOrEditedOrDelete.emit(); //emit an event that case is added to change the state of the table
           // this.getPriorityForDonut();
           // this.getcontriPriorityForDonut();
         },
@@ -249,9 +240,7 @@ export class FormForCaseDetailsComponent implements OnChanges {
       this.resetForm();
       alert("Case Updated")
       this.isOpen = false;
-      this.editedCase.emit()
-
-  
+      this.caseAddedOrEditedOrDelete.emit()
       // this.getPriorityForDonut();
       // this.getcontriPriorityForDonut();
     }
@@ -267,50 +256,30 @@ export class FormForCaseDetailsComponent implements OnChanges {
     });
   }
 
-  deleteCases(id: number) {
-    const isDelete = confirm("Are you sure you want to delete?");
-    if(isDelete){
-      this.service.deleteCases(id).subscribe({
-        error: (err: any) => {
-        },
-        next: (res: any) => {
-          this.result = res;
-          if (this.tableAllOrContri === 'contributing') {
-            //this.getContriCases();
-          } else {
-            //this.getAll();
-          }
-          // this.getPriorityForDonut();
-          // this.getcontriPriorityForDonut();
-        },
-      });
-    }
-  }
-
   resetForm(){
-    this.validCasename = '';
-    this.casename = '';
-    this.priority = '';
-    this.status = '';
-    this.opendate = '';
-    this.reset = true;
-    this.editContributing = false;
-    this.contributingCase = '';
-    this.co2 = null;
-    this.h2o = null;
-    this.o2 = null;
-    this.n2 = null;
-    this.errorCasename = false;
-    this.errorCo2 = false;
-    this.errorH2o = false;
-    this.errorN2 = false;
-    this.errorO2 = false;
-    this.validCo2 = '';
-    this.validH2o = '';
-    this.validO2 = '';
-    this.validN2 = '';
-    console.log(this.inputCases);
-    
+    // this.validCasename = '';
+    // this.casename = '';
+    // this.priority = '';
+    // this.status = '';
+    // // this.opendate = '';
+    // this.resetDate = true; //this is to reset the date
+    // this.editContributing = false;
+    // this.contributingCase = '';
+    // this.co2 = null;
+    // this.h2o = null;
+    // this.o2 = null;
+    // this.n2 = null;
+    // this.errorCasename = false;
+    // this.errorCo2 = false;
+    // this.errorH2o = false;
+    // this.errorN2 = false;
+    // this.errorO2 = false;
+    // this.validCo2 = '';
+    // this.validH2o = '';
+    // this.validO2 = '';
+    // this.validN2 = '';
+    this.resetDate = true;
+    this.resetModal.emit()
     this.validateForm();
   }
 

@@ -19,7 +19,7 @@ import moment from 'moment';
   styleUrl: './tablular-list.component.css',
   providers: [AppserviceService]
 })
-export class TablularListComponent implements OnInit, OnChanges{
+export class TablularListComponent implements OnInit{
   formAddOrEdit: string = '';
   reset: boolean = false;
   isOpen: boolean = false;
@@ -38,7 +38,8 @@ export class TablularListComponent implements OnInit, OnChanges{
   editContributing!: boolean;
   idForEdit: any;
   valuesToBeEnteredInFormForEdit: any = {}
-  tableAllOrContri: string = '';
+  tableAllOrContri: string = 'contributing';
+  result: any = {};
   
 //   tableData: { id: number, name: string }[] = [
 //     { "id": 0, "name": "Available" },
@@ -53,15 +54,15 @@ constructor(private service: AppserviceService){
   
 }
 
-ngOnChanges(){
-  if (this.tableAllOrContri === 'contributing') {
-        console.log("###3");
-        this.getContri();
-      } else {
-        console.log("@@@");
-        this.getAll();
-      }
-}
+// ngOnChanges(){
+//   if (this.tableAllOrContri === 'contributing') {
+//         console.log("###3");
+//         this.getContri();
+//       } else {
+//         console.log("@@@");
+//         this.getAll();
+//       }
+// }
 
 tableSchema: any = [
   {
@@ -141,10 +142,19 @@ tableSchema: any = [
     this.isOpen = false;
   }
 
-  resetModal(){
-    this.reset = true;
+  filterCases(event: any) { //called only when the action menu options are selected
+    //differentiate for contri cases in tebular liast header
+    //here the row select runs
+    console.log("bheventchange", event);
+    
+    if (event.detail.label === 'Contributing Cases') {
+      this.tableAllOrContri = 'contributing';
+      this.getContri();
+    } else if (event.detail.label === 'All Cases') {
+      this.tableAllOrContri = 'all';
+      this.getAll();
+    }
   }
-  filterCases(event: any){}
 
   addCase(event: any){
     
@@ -157,7 +167,6 @@ tableSchema: any = [
     }
   }
   selectEditOrDelete(event: any){
-    
     console.log("selecteditordelet tabular list", event);
     if (event.detail.payload?.label === 'Edit') {
       // this.validateForm();
@@ -177,7 +186,6 @@ tableSchema: any = [
           event.detail.item.contributing === 'contributing' ? true : false
       }
       this.isOpen = true;
-      
       this.service.getId(event.detail.item.casename).subscribe({
           error: (err) => {
           },
@@ -186,8 +194,17 @@ tableSchema: any = [
             console.log("getid: ", this.idForEdit);
           },
         });
-    }else{
-      this.isEdit=false;
+    }
+    else if (event.detail.payload?.label === 'Delete') {
+      let item = event.detail.item;
+      this.service.getId(item.casename).subscribe({
+        error: (err) => {
+        },
+        next: (res: any) => {
+          let result: any = res;
+          this.deleteCases(result[0].casenumber);
+        },
+      });
     }
   }
 
@@ -217,4 +234,48 @@ tableSchema: any = [
     });
   }
 
+  deleteCases(id: number) {
+    const isDelete = confirm("Are you sure you want to delete?");
+    if(isDelete){
+      this.service.deleteCases(id).subscribe({
+        error: (err: any) => {
+        },
+        next: (res: any) => {
+          this.result = res;
+          if (this.tableAllOrContri === 'contributing') {
+            this.getContri();
+          } else {
+            this.getAll();
+          }
+          // this.getPriorityForDonut();
+          // this.getcontriPriorityForDonut();
+        },
+      });
+    }
+  }
+
+  resetModal(){
+    this.valuesToBeEnteredInFormForEdit = {
+      "casename" : '',
+      "validCasenameInEdit" : '',
+      "priority" : '',
+      "status" : '',
+      "opendate" : '',
+      "co2": null,
+      "h2o" : null,
+      "o2" : null,
+      "n2" : null,
+      "editContributing" : false
+    }
+    
+  }
+
+  caseAddedOrEditedOrDelete(){
+    //case is added, edited or deleted so....
+    if (this.tableAllOrContri === 'contributing') {
+      this.getContri();
+    } else if (this.tableAllOrContri === '') {
+      this.getAll();
+    }
+  }
 }

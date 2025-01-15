@@ -15,7 +15,7 @@
   <app-form-for-case-details 
     (onCloseModal)="closeModalOfTable()" 
     (resetModal)="resetModal()"
-    (editedCase)="ngOnChanges()"
+    (caseAddedOrEditedOrDelete)="caseAddedOrEditedOrDelete()"
     [isOpen]="isOpen" 
     [formAddOrEdit]="formAddOrEdit" 
     [valuesToBeEnteredInFormForEdit]="valuesToBeEnteredInFormForEdit"
