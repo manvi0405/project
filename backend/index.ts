@@ -42,7 +42,9 @@ app.get("/api/fetchinsights/:id",(req,res)=>{
 
 // apis for cases
 app.get("/api/fetchContri",(req,res)=>{
-    const fetch_query = `select casename,priority,type,status,opendate,co2,h2o,o2,n2,statuskey,contributing from cases where contributing = 'contributing' order by casenumber desc;`;
+    const fetch_query = `SELECT casename,priority,type,status,opendate,co2,h2o,o2,n2,statuskey,contributing,CASE WHEN contributing = 'contributing' THEN 'contributing' ELSE 'all' END AS case_type
+        FROM cases ORDER BY casenumber DESC;
+    `;
     con.query(fetch_query,(err,result)=>{
         if(!err)
         {
@@ -74,13 +76,7 @@ app.post("/api/postCases",(req,res)=>{
     const {casename,priority,type,status,opendate,contributing,statuskey}:any = req.body;
     const {co2,h2o,o2,n2}=req.body
     const post_query=`Insert into cases ("casename","priority","type","status","opendate","co2","h2o","o2","n2","contributing","statuskey")Values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)`;
-    // console.log(co2,h2o,o2,n2)
-    // const sum = Number(co2)+Number(h2o)+Number(o2)+Number(n2);
-    // co2 =(((co2/sum))*100).toFixed(2);
-    // h2o = (((h2o)/sum)*100).toFixed(2);
-    // o2=(((o2)/sum)*100).toFixed(2);
-    // n2=(((n2)/sum)*100).toFixed(2);
-    // console.log(co2, h2o, n2, o2)
+
     con.query(post_query,[casename,priority,type,status,opendate,co2,h2o,o2,n2,contributing,statuskey],(err,result)=>{
         if(!err)
         {
@@ -95,7 +91,8 @@ app.post("/api/postCases",(req,res)=>{
 })
 
 app.get("/api/priority",(req,res)=>{
-    const get_priority = `select priority, count(*) as count from cases group by priority ;`
+    const get_priority = `SELECT  priority, COUNT(*) AS total_count,SUM(CASE WHEN contributing = 'contributing' THEN 1 ELSE 0 END) AS contributing_count
+    FROM  cases GROUP BY  priority;`
 
     con.query(get_priority,(err,result)=>{
         if(err)
@@ -109,20 +106,20 @@ app.get("/api/priority",(req,res)=>{
     })
 })
  
-app.get("/api/contriPriority",(req,res)=>{
-    const get_priority = `select priority, count(*) as count from cases where contributing = 'contributing' group by priority ;`
+// app.get("/api/contriPriority",(req,res)=>{
+//     const get_priority = `select priority, count(*) as count from cases where contributing = 'contributing' group by priority ;`
 
-    con.query(get_priority,(err,result)=>{
-        if(err)
-        {
-            console.log(err)
-        }
-        else{
-            // console.log(result.rows);
-            res.send(result.rows)
-        }
-    })
-})
+//     con.query(get_priority,(err,result)=>{
+//         if(err)
+//         {
+//             console.log(err)
+//         }
+//         else{
+//             // console.log(result.rows);
+//             res.send(result.rows)
+//         }
+//     })
+// })
 
 
 app.put("/api/updateCases/:id",(req,res)=>{

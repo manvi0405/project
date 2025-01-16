@@ -1,11 +1,12 @@
 import { Request,Response } from "express";
 import pool from "../db/database";
-
-
+// import case from "../dao/caseDao";
+const caseDao = require('../dao/caseDao');
 export const getAll = async(req:Request,res:Response)=>{
     try{
-        const result =  await pool.query(`select casename,priority,type,status,opendate,co2,h2o,o2,n2,statuskey,contributing from cases order by casenumber desc; `);
-        res.status(200).json(result.rows)
+        // const result =  await pool.query(`select casename,priority,type,status,opendate,co2,h2o,o2,n2,statuskey,contributing from cases order by casenumber desc; `);
+        const result = await caseDao.getAll();
+        res.status(200).json(result)
     }
     catch(err)
     {
@@ -15,8 +16,8 @@ export const getAll = async(req:Request,res:Response)=>{
 
 export const getContri = async(req:Request,res:Response)=>{
     try{
-        const result =  await pool.query(`select casename,priority,type,status,opendate,co2,h2o,o2,n2,statuskey,contributing from cases where contributing = 'contributing' order by casenumber desc; `);
-        res.status(200).json(result.rows)
+        const result =  await  caseDao.getContri();
+        res.status(200).json(result)
     }
     catch(err)
     {
@@ -38,6 +39,32 @@ export const getInsights = async(req:Request,res:Response)=>{
         res.status(500).json({error:'error while fetching insights'})
     }
 }
+
+export const getPriority = async(req:Request,res:Response)=>{
+    try{
+        const result = await pool.query(`select priority, count(*) as count from cases group by priority ;`)
+        res.status(200).json(result.rows)
+    }
+    catch(err)
+    {
+        console.log(err)
+        res.status(500).json({error:'error while fetching priority count'})
+    }
+}
+
+
+export const getContriPriority = async(req:Request,res:Response)=>{
+    try{
+        const result = await pool.query(`select priority, count(*) as count from cases where contributing = 'contributing' group by priority ;`)
+        res.status(200).json(result.rows)
+    }
+    catch(err)
+    {
+        console.log(err)
+        res.status(500).json({error:'error while fetching Contri priority count'})
+    }
+}
+
 
 
 export const postCases = async(req:Request,res:Response)=>{

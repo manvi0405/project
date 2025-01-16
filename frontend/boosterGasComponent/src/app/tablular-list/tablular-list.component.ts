@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, Output, EventEmitter, OnChanges, Input } from '@angular/core';
 import { ComponentLibraryModule } from '@bh-digitalsolutions/ui-toolkit-angular/dist';
 import { AppserviceService } from '../appservice.service';
 import { CommonModule } from '@angular/common';
@@ -6,20 +6,26 @@ import { CommonModule } from '@angular/common';
 import { OnInit } from '@angular/core';
 import { FormForCaseDetailsComponent } from './form-for-case-details/form-for-case-details.component';
 import moment from 'moment';
+import { DonutChartCardsComponent } from '../donut-chart-cards/donut-chart-cards.component';
+import { HealthIndexCardComponent } from "../health-index-card/health-index-card.component";
 
 
 @Component({
   selector: 'app-tablular-list',
   standalone: true,
   imports: [
-    ComponentLibraryModule, 
+    ComponentLibraryModule,
     CommonModule,
-    FormForCaseDetailsComponent],
+    FormForCaseDetailsComponent,
+    DonutChartCardsComponent,
+    HealthIndexCardComponent
+],
   templateUrl: './tablular-list.component.html',
   styleUrl: './tablular-list.component.css',
   providers: [AppserviceService]
 })
 export class TablularListComponent implements OnInit, OnChanges{
+  donutData: any;
   formAddOrEdit: string = '';
   reset: boolean = false;
   isOpen: boolean = false;
@@ -39,7 +45,14 @@ export class TablularListComponent implements OnInit, OnChanges{
   idForEdit: any;
   valuesToBeEnteredInFormForEdit: any = {}
   tableAllOrContri: string = '';
-  
+
+  @Output() dataToDonutChart = new EventEmitter<any>(); // New EventEmitter
+  result: any;
+
+  updateDonutChart(data:any) {
+    // console.log("data",data);
+    this.donutData = data;
+  }
 //   tableData: { id: number, name: string }[] = [
 //     { "id": 0, "name": "Available" },
 //     { "id": 1, "name": "Ready" },
@@ -63,7 +76,7 @@ ngOnChanges(){
       }
 }
 
-tableSchema: any = [
+@Input() tableSchema: any = [
   {
     label: 'Case Name',
     prop: 'casename',
@@ -116,8 +129,8 @@ tableSchema: any = [
     },
   },
 ];
-  tableData: any = {};
-  tabularListOption: any = {
+@Input() tableData: any = {};
+@Input() tabularListOption: any = {
     spacing: 'medium',
     isRowSelectable: true,
     isMultiRowsSelectable: false,
@@ -156,9 +169,56 @@ tableSchema: any = [
       console.log("isOpen: ", this.isOpen, this.formAddOrEdit);      
     }
   }
-  selectEditOrDelete(event: any){
+  // selectEditOrDelete(event: any){
+  //   // DonutChartCardsComponent.changeInsightsDonutData(event);
+  //   console.log("selecteditordelet tabular list", event);
+  //   if (event.detail.payload?.label === 'Edit') {
+  //     // this.validateForm();
+  //     this.formAddOrEdit = 'Edit';
+  //     //putting all values in the form modal
+  //     this.valuesToBeEnteredInFormForEdit = {
+  //       "casename" : event.detail.item.casename,
+  //       "validCasenameInEdit" : event.detail.item.casename,
+  //       "priority" : event.detail.item.priority,
+  //       "status" : event.detail.item.status,
+  //       "opendate" : moment(event.detail.item.opendate).format('MM-DD-YYYY'),
+  //       "co2": event.detail.item.co2,
+  //       "h2o" : event.detail.item.h2o,
+  //       "o2" : event.detail.item.o2,
+  //       "n2" : event.detail.item.n2,
+  //       "editContributing" :
+  //         event.detail.item.contributing === 'contributing' ? true : false
+  //     }
+  //     // this.updateDonutChart(this.valuesToBeEnteredInFormForEdit)
+  //     console.log("Emitting dataToDonutChart event with data:", this.valuesToBeEnteredInFormForEdit);
+  //     this.isOpen = true;
+      
+  //     this.service.getId(event.detail.item.casename).subscribe({
+  //         error: (err) => {
+  //         },
+  //         next: (res: any) => {
+  //           this.idForEdit = res;
+  //           console.log("getid: ", this.idForEdit);
+  //         },
+  //       });
+  //   }
+  //   else if (event.detail.payload?.label === 'Delete') {
+  //     this.deleteCases(event.detail.item.casenumber);
+  //   }
+  //   else{
+  //     this.isEdit=false;
+  //     // console.log("Emitting dataToDonutChart event with data:", event.detail.item);
+  //     this.updateDonutChart(event.detail.item);
+  //     this.dataToDonutChart.emit(event.detail.item)
+  //   }
     
+
+  // }
+  
+  selectEditOrDelete(event: any){
     console.log("selecteditordelet tabular list", event);
+    this.updateDonutChart(event.detail.item);
+    this.dataToDonutChart.emit(event.detail.item)
     if (event.detail.payload?.label === 'Edit') {
       // this.validateForm();
       this.formAddOrEdit = 'Edit';
@@ -177,7 +237,6 @@ tableSchema: any = [
           event.detail.item.contributing === 'contributing' ? true : false
       }
       this.isOpen = true;
-      
       this.service.getId(event.detail.item.casename).subscribe({
           error: (err) => {
           },
@@ -186,8 +245,47 @@ tableSchema: any = [
             console.log("getid: ", this.idForEdit);
           },
         });
-    }else{
-      this.isEdit=false;
+    }
+    else if (event.detail.payload?.label === 'Delete') {
+      let item = event.detail.item;
+      this.service.getId(item.casename).subscribe({
+        error: (err) => {
+        },
+        next: (res: any) => {
+          let result: any = res;
+          this.deleteCases(result[0].casenumber);
+        },
+      });
+    }
+  }
+
+  caseAddedOrEditedOrDelete(){
+    //case is added, edited or deleted so....
+    if (this.tableAllOrContri === 'contributing') {
+      this.getContri();
+    } else if (this.tableAllOrContri === '') {
+      this.getAll();
+    }
+  }
+
+  deleteCases(id: number) {
+    const isDelete = confirm("Are you sure you want to delete?");
+    if(isDelete){
+      this.service.deleteCases(id).subscribe({
+        error: (err: any) => {
+          console.log(err);
+        },
+        next: (res: any) => {
+          this.result = res;
+          if (this.tableAllOrContri === 'contributing') {
+            this.getContri();
+          } else {
+            this.getAll();
+          }
+          // this.getPriorityForDonut();
+          // this.getcontriPriorityForDonut();
+        },
+      });
     }
   }
 
@@ -216,5 +314,7 @@ tableSchema: any = [
       },
     });
   }
+
+  
 
 }

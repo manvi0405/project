@@ -33,9 +33,10 @@ global.setInterval(()=>{
 
 export const validateApiKey = (req:Request,res:Response,next:NextFunction):void=>{
     // const apikey = req.headers[''];
-    const requestKey = req.headers['x-api-key'];
-    console.log(requestKey)
-    if(!requestKey || requestKey !== apiValue){
+    // console.log(req.headers.authorization)
+    const requestKey = req.headers.authorization;
+    // console.log(requestKey)
+    if(!requestKey || requestKey !== `Bearer ${apiValue}`){
         res.status(401).json({message:"unauthorised : Invalid Api Key"});
         return;
     }

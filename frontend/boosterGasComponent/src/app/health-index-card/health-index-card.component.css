@@ -28,7 +28,8 @@ color: #121212;
 
 .priority {
     position: relative;
-    bottom: 120px;
-    left: 0.5%;
+    bottom: 112px;
+    right: 0.6%;
+    width: 20px;
 }
   

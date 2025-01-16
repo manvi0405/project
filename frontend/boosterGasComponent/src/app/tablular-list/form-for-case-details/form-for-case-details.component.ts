@@ -189,7 +189,7 @@ export class FormForCaseDetailsComponent implements OnChanges {
   selectEditOrDelete() {
     // this.changeInsightsDonutData(event);
     
-    console.log("selectEditOrDelete form: ", event);
+    // console.log("selectEditOrDelete form: ", );
     
     if (this.formAddOrEdit === 'Edit') {
       this.casename = this.valuesToBeEnteredInFormForEdit.casename;
