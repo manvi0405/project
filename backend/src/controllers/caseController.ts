@@ -1,6 +1,6 @@
 import { Request,Response } from "express";
 import pool from "../db/database";
-// import case from "../dao/caseDao";
+
 const caseDao = require('../dao/caseDao');
 export const getAll = async(req:Request,res:Response)=>{
     try{
