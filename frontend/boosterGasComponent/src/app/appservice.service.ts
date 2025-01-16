@@ -1,80 +1,70 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-
-
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
+
 export class AppserviceService {
+  tokenValue: any = localStorage.getItem('token')
+  headers: any = { 'Authorization': `Bearer ${this.tokenValue}` }
+  // apiValueCall(){
+  //   console.log('app service');
+  //   this.http.get(this.baseURL+`/apiValue`).subscribe((res: any)=>{
+  //     this.tokenValue = res.apiValue;
+  //   })
+  //   this.headers = { 'Authorization': `Bearer ${this.tokenValue}` }
+  //   console.log(this.headers)
+  // }
   
-
-  constructor(private http: HttpClient) { }
-
-  baseURL: String = 'http://localhost:3000'
+  constructor(private http: HttpClient) { 
+    // this.apiValueCall()
+  }
   
+  baseURL: String = 'http://localhost:3000/api/cases'
 
   getContri(){
-    return this.http.get(this.baseURL+'/api/fetchContri'); 
+    console.log(this.headers)
+    return this.http.get(this.baseURL+'/fetchContri', this.headers); 
   }
 
   getAll(){
-    return this.http.get(this.baseURL+'/api/fetchAll')
+    return this.http.get(this.baseURL+'/fetchAll')
   }
 
   validateCasename(casename: string){
     console.log("service validate casename")
-    return this.http.get(this.baseURL + `/api/validateCasename/${casename}`)
+    return this.http.get(this.baseURL + `/validateCasename/${casename}`)
   }
 
   getId(casename: string){
     console.log("getId sevices")
-    return this.http.get(this.baseURL+`/api/fetchId/${casename}`)
+    return this.http.get(this.baseURL+`/fetchId/${casename}`)
   }
 
   priority(){
-    return this.http.get(this.baseURL+`/api/priority`)
+    return this.http.get(this.baseURL+`/priority`)
   }
  
   contributingpriority(){
-    return this.http.get(this.baseURL+'/api/contriPriority')
+    return this.http.get(this.baseURL+'/contriPriority')
   }
  
   insights(id: number){
-    return this.http.get(this.baseURL+`/api/fetchinsights/${id}`)
+    return this.http.get(this.baseURL+`/fetchinsights/${id}`)
   }
 
   postCases(value: any){
     console.log('post data services')
-    return this.http.post(this.baseURL+'/api/postCases', value);
+    return this.http.post(this.baseURL+'/postCases', value);
   }
 
   putCases(id: number, value: any){
     console.log('put data');
-    return this.http.put(this.baseURL+`/api/updateCases/${id}`, value)
+    return this.http.put(this.baseURL+`/updateCases/${id}`, value)
   }
 
   deleteCases(id: number){
     console.log("delete data")
-    return this.http.delete(this.baseURL+`/api/deleteCases/${id}`)
+    return this.http.delete(this.baseURL+`/deleteCases/${id}`)
   }
-
-  //mock functions for testing
-  // add(a: number, b: number){
-  //   return a+b;
-  // }
-
-  // subtract(a: number, b: number){
-  //   return a-b;
-  // }
-
-  // multiply(a: number, b: number){
-  //   return a*b;
-  // }
-
-  // divide(a: number, b: number){
-  //   if(b===0){
-  //     throw new Error('Cannot divide by zero')
-  //   }
-  //   return a/b;
-  // }
 }
