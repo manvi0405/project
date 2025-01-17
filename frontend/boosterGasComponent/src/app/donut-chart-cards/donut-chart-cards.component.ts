@@ -9,7 +9,7 @@ import { HealthIndexCardComponent } from "../health-index-card/health-index-card
 @Component({
   selector: 'app-donut-chart-cards',
   standalone: true,
-  imports: [ComponentLibraryModule, HealthIndexCardComponent],
+  imports: [ComponentLibraryModule],
   templateUrl: './donut-chart-cards.component.html',
   styleUrl: './donut-chart-cards.component.css'
 })
@@ -59,19 +59,6 @@ export class DonutChartCardsComponent {
     this.donutOpendate = event.opendate;
     this.donutStatus = event.status;
 
-    // if (event.priority === 'High') {
-    //   this.donutPriority = 'High';
-    //   this.imgSrc = 'assets/priorityHigh.png';
-    // } else if (event.priority === 'Medium') {
-    //   this.donutPriority = 'Medium';
-    //   this.imgSrc = 'assets/PriorityMedium.png';
-    // } else if (event.priority === 'Low') {
-    //   this.donutPriority = 'Low';
-    //   this.imgSrc = 'assets/PriorityLow.png';
-    // } else {
-    //   this.donutPriority = '';
-    //   this.imgSrc = '';
-    // }
     let sum = Number(event.co2)+Number(event.h2o)+Number(event.o2)+Number(event.n2);
     let co2 =(((event.co2/sum))*100).toFixed(2);
     let h2o = (((event.h2o)/sum)*100).toFixed(2);
