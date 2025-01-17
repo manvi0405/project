@@ -1,9 +1,10 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges,OnChanges } from '@angular/core';
 import { ComponentLibraryModule } from '@bh-digitalsolutions/ui-toolkit-angular/dist';
 // import { ComponentLibraryModule } from "@bh-digitalsolutions/ui-toolkit-angular/dist";
 import { cloneDeep } from 'lodash';
 import { AppserviceService } from '../appservice.service';
 import { HealthIndexCardComponent } from "../health-index-card/health-index-card.component";
+import { TablularListComponent } from '../tablular-list/tablular-list.component';
 
 
 @Component({
@@ -13,7 +14,7 @@ import { HealthIndexCardComponent } from "../health-index-card/health-index-card
   templateUrl: './donut-chart-cards.component.html',
   styleUrl: './donut-chart-cards.component.css'
 })
-export class DonutChartCardsComponent {
+export class DonutChartCardsComponent implements OnInit,OnChanges {
 
   // service: any;
   prioritydata: any;
@@ -24,20 +25,28 @@ export class DonutChartCardsComponent {
   donutPriority: string="";
   imgSrc: string="";
  
+  constructor(private service: AppserviceService,private tabularList: TablularListComponent){
+  }
 
   @Input()donutData:any;
+  @Input() donutEdit!: boolean;
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['donutData'] && changes['donutData'].currentValue) {
       this.changeInsightsDonutData(changes['donutData'].currentValue);
     }
+
+    
+  }
+  
+  ngOnInit() {
     this.getPriorityForDonut();
     this.getcontriPriorityForDonut();
-  }
 
-
-  constructor(private service: AppserviceService){
-  
+    this.tabularList.donutEdit.subscribe(()=>{
+      this.getPriorityForDonut();
+      this.getcontriPriorityForDonut();
+    })
   }
   donutLegendSpanRemover(legend: any, value: any) {
     const s = legend.split('</span>');

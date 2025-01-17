@@ -1,17 +1,13 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';
 import { AppserviceService } from './appservice.service';
-import { BhTabularListCustomEvent } from '@bh-digitalsolutions/ui-toolkit/dist/types/components';
+// import { BhTabularListCustomEvent } from '@bh-digitalsolutions/ui-toolkit/dist/types/components';
 import { OnInit } from '@angular/core';
-import moment from 'moment';
-import { cloneDeep } from 'lodash';
-import { AppModule } from './app.module';
+
 import { ComponentLibraryModule } from '@bh-digitalsolutions/ui-toolkit-angular/dist';
 // import { ComponentLibraryModule } from "@bh-digitalsolutions/ui-toolkit-angular/dist";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
-import { DonutChartCardsComponent } from './donut-chart-cards/donut-chart-cards.component';
-import { FormForCaseDetailsComponent } from "./tablular-list/form-for-case-details/form-for-case-details.component";
-import { HealthIndexCardComponent } from "./health-index-card/health-index-card.component";
+;
 import { TablularListComponent } from "./tablular-list/tablular-list.component";
 
 @Component({
@@ -21,8 +17,7 @@ import { TablularListComponent } from "./tablular-list/tablular-list.component";
     ComponentLibraryModule,
     FormsModule,
     CommonModule,
-    DonutChartCardsComponent,
-    HealthIndexCardComponent,
+
     TablularListComponent
 ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -357,8 +352,6 @@ export class AppComponent implements OnInit {
   //   }
   // }
 
-<<<<<<< HEAD
-=======
   // filterCases(event: any) { //called only when the action menu options are selected
   //   //differentiate for contri cases in tebular liast header
   //   //here the row select runs
@@ -373,7 +366,6 @@ export class AppComponent implements OnInit {
   //   }
   // }
 
->>>>>>> f8504b03b114506b9d67b935098f1aa1a849f13c
   // selectSaveOrReset(event: any) {
   //   if (event.detail === 'sb--modal-cta--primary') {
   //     //save button

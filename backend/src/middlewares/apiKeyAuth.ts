@@ -1,7 +1,6 @@
 import { Request,Response,NextFunction} from "express";
 import dotenv from 'dotenv'
-import { setInterval } from "timers/promises";
-import { request } from "http";
+
 
 dotenv.config();
 
@@ -31,14 +30,14 @@ global.setInterval(()=>{
     refreshApiValue();
     },10*60*1000)
 
-export const validateApiKey = (req:Request,res:Response,next:NextFunction):void=>{
-    // const apikey = req.headers[''];
-    // console.log(req.headers.authorization)
-    const requestKey = req.headers.authorization;
-    // console.log(requestKey)
-    if(!requestKey || requestKey !== `Bearer ${apiValue}`){
-        res.status(401).json({message:"unauthorised : Invalid Api Key"});
-        return;
+    export const validateApiKey = (req:Request,res:Response,next:NextFunction):void=>{
+        // const apikey = req.headers[''];
+        // console.log(req.headers.authorization)
+        const requestKey = req.headers.authorization;
+        // console.log("requestKey", requestKey)
+        if(!requestKey || requestKey !== `Bearer ${apiValue}`){
+            res.status(401).json({message:"unauthorised : Invalid Api Key"});
+            return;
+        }
+        next();
     }
-    next();
-}

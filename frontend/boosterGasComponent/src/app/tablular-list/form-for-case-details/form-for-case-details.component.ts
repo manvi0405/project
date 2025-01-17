@@ -1,11 +1,11 @@
-import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, ChangeDetectorRef } from '@angular/core';
 import { ComponentLibraryModule } from '@bh-digitalsolutions/ui-toolkit-angular/dist';
 // import { ComponentLibraryModule } from "@bh-digitalsolutions/ui-toolkit-angular/dist";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import moment from 'moment';
 import { AppserviceService } from '../../appservice.service';
-
+ 
 @Component({ //child of tabular list
   selector: 'app-form-for-case-details',
   standalone: true,
@@ -21,12 +21,12 @@ import { AppserviceService } from '../../appservice.service';
 export class FormForCaseDetailsComponent implements OnChanges {
   validCasenameInEdit: string = '';
   valid: string = '';
-  constructor(private service: AppserviceService){
-  
+  constructor(private service: AppserviceService, cdr:ChangeDetectorRef){
+ 
   }
-
-  
-
+ 
+ 
+ 
   casename: string = '';
   status: string = '';
   priority: string = '';
@@ -51,35 +51,39 @@ export class FormForCaseDetailsComponent implements OnChanges {
   validN2: string | undefined = '';
   result: any;
   tableAllOrContri: string = '';
-  
+ 
   inputCases: any = {};
-  
+ 
   @Input() idForEdit: any = [];
   // @Input() isEdit!: boolean
   @Input() valuesToBeEnteredInFormForEdit: any = {}
   @Input() isOpen!: boolean //this is a property that can take input from the parent, tabular list
   //to send data to the parent, the data is send using @Output
   @Input() formAddOrEdit: string = '';
-
+ 
   @Output() resetModal = new EventEmitter()
   @Output() onCloseModal = new EventEmitter<boolean>();
   @Output() caseAddedOrEditedOrDelete = new EventEmitter();
+ 
   modalCtas: any = [
     { type: 'secondary', label: 'Reset', key: 'sb--modal-cta--secondary' },
     { type: 'primary', label: 'Save', key: 'sb--modal-cta--primary' },
   ];
-
+ 
   ngOnChanges(){
-    if(this.valuesToBeEnteredInFormForEdit){ 
+    if(this.valuesToBeEnteredInFormForEdit && this.formAddOrEdit === 'Edit'){
       this.editForm(); //this is run when there are changed in the valuesToBeEnteredInFormForEdit
     }
+    if(this.isOpen===true && this.formAddOrEdit === 'Add'){
+      this.validateForm();
+    }
    }
-
+ 
   async casenameAndInsightsInputs(event: any, input: string){
     console.log("inouevent", event);
     if (input === 'casename') {
       if (event.detail.trim() != '') {
-        
+       
         this.casename = event.detail;
         if(this.casename === this.validCasenameInEdit){//only for edit
           this.validCasename = ''
@@ -104,7 +108,7 @@ export class FormForCaseDetailsComponent implements OnChanges {
       if (event.detail.trim() != '') {
         this.co2 = event.detail;
         this.errorCo2 = false;
-        // this.validCo2 = this.validateInsights(this.co2);
+        this.validCo2 = this.validateInsights(this.co2);
       } else {
         this.errorCo2 = true;
       }
@@ -112,7 +116,7 @@ export class FormForCaseDetailsComponent implements OnChanges {
       if (event.detail.trim() != '') {
         this.h2o = event.detail;
         this.errorH2o = false;
-        // this.validH2o = this.validateInsights(this.h2o);
+        this.validH2o = this.validateInsights(this.h2o);
       } else {
         this.errorH2o = true;
       }
@@ -120,7 +124,7 @@ export class FormForCaseDetailsComponent implements OnChanges {
       if (event.detail.trim() != '') {
         this.o2 = event.detail;
         this.errorO2 = false;
-        // this.validO2 = this.validateInsights(this.o2);
+        this.validO2 = this.validateInsights(this.o2);
       } else {
         this.errorO2 = true;
       }
@@ -128,14 +132,14 @@ export class FormForCaseDetailsComponent implements OnChanges {
       if (event.detail.trim() != '') {
         this.n2 = event.detail;
         this.errorN2 = false;
-        // this.validN2 = this.validateInsights(this.n2);
+        this.validN2 = this.validateInsights(this.n2);
       } else {
         this.errorN2 = true;
       }
     }
     this.validateForm();
   }
-
+ 
   priorityAndStatusDropdown(event: any){
     console.log("dropdown: ", event);
     if (event.detail === 'tearsheet--bh-menu--item-1-high') {
@@ -151,10 +155,10 @@ export class FormForCaseDetailsComponent implements OnChanges {
     }
     this.validateForm();
   }
-
+ 
   dateOrCheckbox(event: any, input: string) {
     console.log("dateandcheckbox: ", event);
-    
+   
     if (
       input === 'date' &&
       this.opendate !== moment(event.detail).format('MM-DD-YYYY')
@@ -171,9 +175,9 @@ export class FormForCaseDetailsComponent implements OnChanges {
       this.validateForm();
     }
   }
-
+ 
   closeModalOfForm(){
-    this.resetForm(); 
+    this.resetForm();
     this.onCloseModal.emit()
   }
   selectSaveOrReset(event: any){
@@ -186,16 +190,8 @@ export class FormForCaseDetailsComponent implements OnChanges {
       this.resetForm();
     }
   }
-
-<<<<<<< HEAD
-  selectEditOrDelete() {
-    // this.changeInsightsDonutData(event);
-    
-    // console.log("selectEditOrDelete form: ", );
-    
-=======
+ 
   editForm() {
->>>>>>> f8504b03b114506b9d67b935098f1aa1a849f13c
     if (this.formAddOrEdit === 'Edit') {
       this.casename = this.valuesToBeEnteredInFormForEdit.casename;
       this.validCasenameInEdit = this.valuesToBeEnteredInFormForEdit.validCasenameInEdit;
@@ -207,12 +203,27 @@ export class FormForCaseDetailsComponent implements OnChanges {
       this.o2 = this.valuesToBeEnteredInFormForEdit.o2;
       this.n2 = this.valuesToBeEnteredInFormForEdit.n2;
       this.editContributing = this.valuesToBeEnteredInFormForEdit.editContributing;
+ 
+      this.modalCtas = [
+      { type: 'secondary', label: 'Reset', key: 'sb--modal-cta--secondary' },
+      {
+        type: 'primary',
+        label: 'Save',
+        key: 'sb--modal-cta--primary',
+        isDisabled: 'true',
+      },
+    ];
     }
+   
   }
-
+ 
   saveForm(){ //when save button is clicked for editing or saving
     //
+    
+    
     this.resetDate = false;
+    this.resetForm();
+
     this.inputCases = {
       casename: this.casename,
       priority: this.priority,
@@ -233,37 +244,39 @@ export class FormForCaseDetailsComponent implements OnChanges {
         next: (res: any) => {
           this.result = res;
           alert("Case Saved")
-          this.onCloseModal.emit()
           this.resetForm();
+          this.onCloseModal.emit()
           //send output that the case is added
           this.caseAddedOrEditedOrDelete.emit(); //emit an event that case is added to change the state of the table
-          // this.getPriorityForDonut();
-          // this.getcontriPriorityForDonut();
+
         },
       });
-    } 
+    }
     else {
+      console.log(">>>>>>>>>",this.inputCases);
       // this.sortTableBasedOnUpdatedData(this.inputCases, this.casename);
       this.updateCases(this.idForEdit[0].casenumber, this.inputCases);
-      this.resetForm();
+     
       alert("Case Updated")
       this.isOpen = false;
+      this.resetForm();
       this.caseAddedOrEditedOrDelete.emit()
       // this.getPriorityForDonut();
       // this.getcontriPriorityForDonut();
     }
   }
-
+ 
   updateCases(id: number, data: any){
     this.service.putCases(id, data).subscribe({
       error: (err) => {
+        console.log(err)
       },
       next: (res: any) => {
         this.result = res;
       },
     });
   }
-
+ 
   resetForm(){
     // this.validCasename = '';
     // this.casename = '';
@@ -290,7 +303,7 @@ export class FormForCaseDetailsComponent implements OnChanges {
     this.resetModal.emit()
     this.validateForm();
   }
-
+ 
   validateForm() {
     if (
       this.casename &&
@@ -310,7 +323,7 @@ export class FormForCaseDetailsComponent implements OnChanges {
       !this.errorH2o &&
       !this.errorN2 &&
       !this.errorO2 &&
-      !this.errorCasename 
+      !this.errorCasename
       // ||
       // this.contributingCase
     ) {
@@ -329,8 +342,9 @@ export class FormForCaseDetailsComponent implements OnChanges {
         },
       ];
     }
+   
   }
-
+ 
   validateInsights(value: number | null) {
     if (value == null) {
       return;
@@ -343,7 +357,7 @@ export class FormForCaseDetailsComponent implements OnChanges {
       return this.valid;
     }
   }
-
+ 
   validateAlphaNumeric(input: string) {
     let val = input.trim();
     let isValid = /^[a-z0-9 ]+$/i.test(val);
@@ -353,17 +367,19 @@ export class FormForCaseDetailsComponent implements OnChanges {
       : (this.validCasename="Invalid Input")
     )
   }
-
+ 
   validateCasename(casename: string): Promise<any> {
     return new Promise((resolve) => {
       this.service.validateCasename(casename).subscribe((value: any) => { //resolve callback used to resolve (sucessful) result and reject to reject the promise(in case of error)
         this.result = value;
-        if (this.result.rowCount == 1) {
+        if (this.result.length == 1) {
           this.validCasename = `${casename} already exists`;
         }
-        resolve(this.validCasename); //resolve used to provide the result or value 
+        resolve(this.validCasename); //resolve used to provide the result or value
       });
     });
   }
-
+ 
 }
+ 
+ 
