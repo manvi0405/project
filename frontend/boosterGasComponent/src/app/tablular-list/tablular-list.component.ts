@@ -24,8 +24,12 @@ import { HealthIndexCardComponent } from "../health-index-card/health-index-card
   styleUrl: './tablular-list.component.css',
   providers: [AppserviceService]
 })
+<<<<<<< HEAD
 export class TablularListComponent implements OnInit, OnChanges{
   donutData: any;
+=======
+export class TablularListComponent implements OnInit{
+>>>>>>> f8504b03b114506b9d67b935098f1aa1a849f13c
   formAddOrEdit: string = '';
   reset: boolean = false;
   isOpen: boolean = false;
@@ -44,6 +48,7 @@ export class TablularListComponent implements OnInit, OnChanges{
   editContributing!: boolean;
   idForEdit: any;
   valuesToBeEnteredInFormForEdit: any = {}
+<<<<<<< HEAD
   tableAllOrContri: string = '';
 
   @Output() dataToDonutChart = new EventEmitter<any>(); // New EventEmitter
@@ -53,6 +58,11 @@ export class TablularListComponent implements OnInit, OnChanges{
     // console.log("data",data);
     this.donutData = data;
   }
+=======
+  tableAllOrContri: string = 'contributing';
+  result: any = {};
+  
+>>>>>>> f8504b03b114506b9d67b935098f1aa1a849f13c
 //   tableData: { id: number, name: string }[] = [
 //     { "id": 0, "name": "Available" },
 //     { "id": 1, "name": "Ready" },
@@ -66,15 +76,15 @@ constructor(private service: AppserviceService){
   
 }
 
-ngOnChanges(){
-  if (this.tableAllOrContri === 'contributing') {
-        console.log("###3");
-        this.getContri();
-      } else {
-        console.log("@@@");
-        this.getAll();
-      }
-}
+// ngOnChanges(){
+//   if (this.tableAllOrContri === 'contributing') {
+//         console.log("###3");
+//         this.getContri();
+//       } else {
+//         console.log("@@@");
+//         this.getAll();
+//       }
+// }
 
 @Input() tableSchema: any = [
   {
@@ -154,10 +164,19 @@ ngOnChanges(){
     this.isOpen = false;
   }
 
-  resetModal(){
-    this.reset = true;
+  filterCases(event: any) { //called only when the action menu options are selected
+    //differentiate for contri cases in tebular liast header
+    //here the row select runs
+    console.log("bheventchange", event);
+    
+    if (event.detail.label === 'Contributing Cases') {
+      this.tableAllOrContri = 'contributing';
+      this.getContri();
+    } else if (event.detail.label === 'All Cases') {
+      this.tableAllOrContri = 'all';
+      this.getAll();
+    }
   }
-  filterCases(event: any){}
 
   addCase(event: any){
     
@@ -169,6 +188,7 @@ ngOnChanges(){
       console.log("isOpen: ", this.isOpen, this.formAddOrEdit);      
     }
   }
+<<<<<<< HEAD
   // selectEditOrDelete(event: any){
   //   // DonutChartCardsComponent.changeInsightsDonutData(event);
   //   console.log("selecteditordelet tabular list", event);
@@ -215,6 +235,8 @@ ngOnChanges(){
 
   // }
   
+=======
+>>>>>>> f8504b03b114506b9d67b935098f1aa1a849f13c
   selectEditOrDelete(event: any){
     console.log("selecteditordelet tabular list", event);
     this.updateDonutChart(event.detail.item);
@@ -256,6 +278,7 @@ ngOnChanges(){
           this.deleteCases(result[0].casenumber);
         },
       });
+<<<<<<< HEAD
     }
   }
 
@@ -286,6 +309,8 @@ ngOnChanges(){
           // this.getcontriPriorityForDonut();
         },
       });
+=======
+>>>>>>> f8504b03b114506b9d67b935098f1aa1a849f13c
     }
   }
 
@@ -315,6 +340,53 @@ ngOnChanges(){
     });
   }
 
+<<<<<<< HEAD
   
 
+=======
+  deleteCases(id: number) {
+    const isDelete = confirm("Are you sure you want to delete?");
+    if(isDelete){
+      this.service.deleteCases(id).subscribe({
+        error: (err: any) => {
+        },
+        next: (res: any) => {
+          this.result = res;
+          if (this.tableAllOrContri === 'contributing') {
+            this.getContri();
+          } else {
+            this.getAll();
+          }
+          // this.getPriorityForDonut();
+          // this.getcontriPriorityForDonut();
+        },
+      });
+    }
+  }
+
+  resetModal(){
+    this.valuesToBeEnteredInFormForEdit = {
+      "casename" : '',
+      "validCasenameInEdit" : '',
+      "priority" : '',
+      "status" : '',
+      "opendate" : '',
+      "co2": null,
+      "h2o" : null,
+      "o2" : null,
+      "n2" : null,
+      "editContributing" : false
+    }
+    
+  }
+
+  caseAddedOrEditedOrDelete(){
+    //case is added, edited or deleted so....
+    if (this.tableAllOrContri === 'contributing') {
+      this.getContri();
+    } else if (this.tableAllOrContri === '') {
+      this.getAll();
+    }
+  }
+>>>>>>> f8504b03b114506b9d67b935098f1aa1a849f13c
 }

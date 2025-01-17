@@ -357,6 +357,23 @@ export class AppComponent implements OnInit {
   //   }
   // }
 
+<<<<<<< HEAD
+=======
+  // filterCases(event: any) { //called only when the action menu options are selected
+  //   //differentiate for contri cases in tebular liast header
+  //   //here the row select runs
+  //   console.log("bheventchange", event);
+    
+  //   if (event.detail.label === 'Contributing Cases') {
+  //     this.tableAllOrContri = 'contributing';
+  //     //this.getContriCases();
+  //   } else if (event.detail.label === 'All Cases') {
+  //     this.tableAllOrContri = 'all';
+  //     //this.getAll();
+  //   }
+  // }
+
+>>>>>>> f8504b03b114506b9d67b935098f1aa1a849f13c
   // selectSaveOrReset(event: any) {
   //   if (event.detail === 'sb--modal-cta--primary') {
   //     //save button
