@@ -7,7 +7,6 @@ import { ComponentLibraryModule } from '@bh-digitalsolutions/ui-toolkit-angular/
 // import { ComponentLibraryModule } from "@bh-digitalsolutions/ui-toolkit-angular/dist";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
-;
 import { TablularListComponent } from "./tablular-list/tablular-list.component";
 
 @Component({

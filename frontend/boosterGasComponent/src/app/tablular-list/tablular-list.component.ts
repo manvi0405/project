@@ -22,11 +22,11 @@ import { HealthIndexCardComponent } from "../health-index-card/health-index-card
 ],
   templateUrl: './tablular-list.component.html',
   styleUrl: './tablular-list.component.css',
-  providers: [AppserviceService]
+  providers: [AppserviceService] 
 })
 export class TablularListComponent implements OnInit{
   formAddOrEdit: string = '';
-  reset: boolean = false;
+  resetDate: boolean = false;
   isOpen: boolean = false;
   isEdit: boolean = false;
   casename: string = '';
@@ -163,7 +163,7 @@ constructor(private service: AppserviceService){
     console.log("addcasebutton", event);
     if (event.detail === 'example-bhtl--cta-primary') {
       this.formAddOrEdit = 'Add';
-      this.reset = false;
+      this.resetDate = false;
       this.isOpen = true; //send this value to the modal component to open the form
       console.log("isOpen: ", this.isOpen, this.formAddOrEdit);  
          
@@ -176,6 +176,8 @@ constructor(private service: AppserviceService){
     this.dataToDonutChart.emit(event.detail.item)
     if (event.detail.payload?.label === 'Edit') {
       this.formAddOrEdit = 'Edit';
+      this.resetDate = false;
+      
       //putting all values in the form modal variable
       this.valuesToBeEnteredInFormForEdit = {
         "casename" : event.detail.item.casename,

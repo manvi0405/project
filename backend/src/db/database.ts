@@ -8,7 +8,7 @@ pool.connect((err,client,release)=>{
         console.error('error connecting database');
     }
     else{
-        console.log("Database connected successfully");
+        // console.log("Database connected successfully");
         release();
     }
 })

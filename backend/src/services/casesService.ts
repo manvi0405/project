@@ -11,15 +11,6 @@ export class caseService{
         }
     }
 
-    // static async getContri(){
-    //     try{
-    //         const result = await CaseDao.getContri();
-    //         return result;
-    //     }
-    //     catch(err){
-    //         throw err;
-    //     }
-    // }
 
     static async getInsights(id:number){
         try{

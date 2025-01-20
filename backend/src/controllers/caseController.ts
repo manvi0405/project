@@ -13,24 +13,15 @@ export const getAllAndContri = async(req:Request,res:Response)=>{
     }
 }
 
-// export const getContri = async(req:Request,res:Response)=>{
-//     try{
-//         const result = await  caseService.getContri();
-//         res.status(200).json(result)
-//     }
-//     catch(err)
-//     {
-//         res.status(500).json({error:'error fetching case'})
-//     }
-// }
+
 
 export const getInsights = async(req:Request,res:Response)=>{
-    const id:number = Number(req.params.id); //params means value taken from api link here id
+    const id:number = parseInt(req.params.id); //params means value taken from api link here id
    
 
     try{
         const result = await caseService.getInsights(id);
-        res.status(200).json(result.rows)
+        res.status(200).json(result)
     }
     catch(err)
     {
@@ -57,7 +48,7 @@ export const postCases = async(req:Request,res:Response)=>{
          const {casename,priority,type,status,opendate,contributing,statuskey,co2,h2o,o2,n2}=req.body;
          const result = await caseService.postCases(casename,priority,type,status,opendate,contributing,statuskey,co2,h2o,o2,n2);
 
-         res.status(201).json({message:"Posted data succesfully"})
+         res.status(200).json({message:"Posted data succesfully"})
     }
     catch(err){
         res.status(500).json({error:'error adding case'})
@@ -65,13 +56,13 @@ export const postCases = async(req:Request,res:Response)=>{
 }
 
 export const updateCases = async(req:Request,res:Response)=>{
-    const id:number = Number(req.params.id); //params means value taken from api link here id
+    const id:number = parseInt(req.params.id); 
     const {casename,priority,type,status,opendate,contributing,co2,h2o,o2,n2,statuskey} = req.body;
 
     try{
         const result = await caseService.updateCases(casename,priority,type,status,opendate,contributing,statuskey,co2,h2o,o2,n2,id);
         console.log(result);
-        res.status(200).json({message:"updated data successfully "})
+        res.status(200).json({message:"updated data successfully"})
     }
     catch(err)
     {
@@ -82,7 +73,7 @@ export const updateCases = async(req:Request,res:Response)=>{
 
 
 export const deleteCases = async(req:Request,res:Response)=>{
-    const id:number = Number(req.params.id); //params means value taken from api link here id
+    const id:number = parseInt(req.params.id); 
     
 
     try{
