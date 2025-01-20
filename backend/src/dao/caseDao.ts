@@ -48,7 +48,7 @@ export class CaseDao{
     FROM  cases GROUP BY  priority;`;
         try{
             const result = await pool.query(statement);
-            console.log(result.rows)
+            // console.log(result.rows)
             return result.rows;
 
         }

@@ -28,7 +28,7 @@ const refreshApiValue = () =>{
 // refreshApiValue();
 global.setInterval(()=>{
     refreshApiValue();
-    },10*60*1000)
+    },30*60*1000)
 
     export const validateApiKey = (req:Request,res:Response,next:NextFunction):void=>{
         // const apikey = req.headers[''];

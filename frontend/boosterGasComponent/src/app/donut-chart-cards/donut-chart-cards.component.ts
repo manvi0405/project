@@ -35,8 +35,6 @@ export class DonutChartCardsComponent implements OnInit,OnChanges {
     if (changes['donutData'] && changes['donutData'].currentValue) {
       this.changeInsightsDonutData(changes['donutData'].currentValue);
     }
-
-    
   }
   
   ngOnInit() {

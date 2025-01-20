@@ -46,7 +46,7 @@ export class TablularListComponent implements OnInit{
   tableAllOrContri: string = 'contributing';
   donutData: any;
  
-  @Output() dataToDonutChart = new EventEmitter<any>(); // New EventEmitter
+  @Output() dataToDonutChart = new EventEmitter<any>(); 
   @Output() donutEdit = new EventEmitter();
 
 
@@ -56,11 +56,7 @@ export class TablularListComponent implements OnInit{
     // console.log("data",data);
     this.donutData = data;
   }
-//   tableData: { id: number, name: string }[] = [
-//     { "id": 0, "name": "Available" },
-//     { "id": 1, "name": "Ready" },
-//     { "id": 2, "name": "Started" }
-// ];
+
 ngOnInit(): void {
     this.getAllAndContri()
 }
@@ -69,15 +65,7 @@ constructor(private service: AppserviceService){
  
 }
  
-// ngOnChanges(){
-//   if (this.tableAllOrContri === 'contributing') {
-//         console.log("###3");
-//         this.getContri();
-//       } else {
-//         console.log("@@@");
-//         this.getAll();
-//       }
-// }
+
  
 @Input() tableSchema: any = [
   {
@@ -158,16 +146,17 @@ constructor(private service: AppserviceService){
   }
  
   filterCases(event: any) { //called only when the action menu options are selected
-    //differentiate for contri cases in tebular liast header
+    //differentiate for contri cases in tabular liast header
     //here the row select runs
     console.log("bheventchange", event);
-    this.getAllAndContri()
     if (event.detail.label === 'Contributing Cases') {
       this.tableAllOrContri = 'contributing';
+      this.getAllAndContri()
     } else if (event.detail.label === 'All Cases') {
       this.tableAllOrContri = 'all';
+      this.getAllAndContri()
     }
-    this.getAllAndContri()
+    
   }
  
   addCase(event: any){
@@ -205,7 +194,6 @@ constructor(private service: AppserviceService){
       this.service.getId(event.detail.item.casename).subscribe({
           error: (err) => {
             console.log(err);
-            
           },
           next: (res: any) => {
             this.idForEdit = res;
@@ -290,14 +278,13 @@ constructor(private service: AppserviceService){
       "casename" : '',
       "validCasenameInEdit" : '',
       "priority" : '',
-      "status" : '',
+      "status" : '',  
+      "opendate": '',
       "co2": null,
       "h2o" : null,
       "o2" : null,
-      "n2" : null,
-      "editContributing" : false
+      "n2" : null
     }
-   
   }
  
   caseAddedOrEditedOrDelete(){
@@ -307,6 +294,7 @@ constructor(private service: AppserviceService){
     // } else if (this.tableAllOrContri === 'all') {
     //   this.getAll();
     // }
+    this.resetModal()
     this.donutEdit.emit();
     this.getAllAndContri()
   }

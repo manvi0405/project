@@ -217,12 +217,9 @@ export class FormForCaseDetailsComponent implements OnChanges {
    
   }
  
-  saveForm(){ //when save button is clicked for editing or saving
-    //
-    
-    
+  saveForm(){ 
     this.resetDate = false;
-    this.resetForm();
+    // this.resetForm();
 
     this.inputCases = {
       casename: this.casename,
@@ -245,6 +242,7 @@ export class FormForCaseDetailsComponent implements OnChanges {
           this.result = res;
           alert("Case Saved")
           this.resetForm();
+          console.log("add",this.inputCases)
           this.onCloseModal.emit()
           //send output that the case is added
           this.caseAddedOrEditedOrDelete.emit(); //emit an event that case is added to change the state of the table
@@ -277,32 +275,24 @@ export class FormForCaseDetailsComponent implements OnChanges {
     });
   }
  
-  resetForm(){
-    // this.validCasename = '';
-    // this.casename = '';
-    // this.priority = '';
-    // this.status = '';
-    // // this.opendate = '';
-    // this.resetDate = true; //this is to reset the date
-    // this.editContributing = false;
-    // this.contributingCase = '';
-    // this.co2 = null;
-    // this.h2o = null;
-    // this.o2 = null;
-    // this.n2 = null;
-    // this.errorCasename = false;
-    // this.errorCo2 = false;
-    // this.errorH2o = false;
-    // this.errorN2 = false;
-    // this.errorO2 = false;
-    // this.validCo2 = '';
-    // this.validH2o = '';
-    // this.validO2 = '';
-    // this.validN2 = '';
-    this.resetDate = true;
-    this.resetModal.emit()
-    this.validateForm();
-  }
+
+   
+    resetForm(){
+      this.resetDate = true;
+      this.resetModal.emit()
+      this.casename = this.valuesToBeEnteredInFormForEdit.casename;
+      this.validCasenameInEdit = this.valuesToBeEnteredInFormForEdit.validCasenameInEdit;
+      this.priority = this.valuesToBeEnteredInFormForEdit.priority;
+      this.status = this.valuesToBeEnteredInFormForEdit.status;
+      this.opendate = this.valuesToBeEnteredInFormForEdit.opendate;
+      this.co2 = this.valuesToBeEnteredInFormForEdit.co2;
+      this.h2o = this.valuesToBeEnteredInFormForEdit.h2o;
+      this.o2 = this.valuesToBeEnteredInFormForEdit.o2;
+      this.n2 = this.valuesToBeEnteredInFormForEdit.n2;
+      this.editContributing = this.valuesToBeEnteredInFormForEdit.editContributing;
+      // this.validateForm();
+    }
+
  
   validateForm() {
     if (
