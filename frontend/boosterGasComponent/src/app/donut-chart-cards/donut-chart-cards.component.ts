@@ -5,8 +5,13 @@ import { cloneDeep } from 'lodash';
 import { AppserviceService } from '../appservice.service';
 import { HealthIndexCardComponent } from "../health-index-card/health-index-card.component";
 import { TablularListComponent } from '../tablular-list/tablular-list.component';
+<<<<<<< HEAD
  
  
+=======
+
+
+>>>>>>> 73282603882894501fed6c2f202755a6ba940eb8
 @Component({
   selector: 'app-donut-chart-cards',
   standalone: true,
@@ -15,7 +20,11 @@ import { TablularListComponent } from '../tablular-list/tablular-list.component'
   styleUrl: './donut-chart-cards.component.css'
 })
 export class DonutChartCardsComponent implements OnInit,OnChanges {
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> 73282603882894501fed6c2f202755a6ba940eb8
   // service: any;
   prioritydata: any;
   priorityContridata: any;
@@ -27,25 +36,44 @@ export class DonutChartCardsComponent implements OnInit,OnChanges {
  
   constructor(private service: AppserviceService,private tabularList: TablularListComponent){
   }
+<<<<<<< HEAD
  
   @Input()donutData:any;
   @Input() donutEdit!: boolean;
  
+=======
+
+  @Input()donutData:any;
+  @Input() donutEdit!: boolean;
+
+>>>>>>> 73282603882894501fed6c2f202755a6ba940eb8
   ngOnChanges(changes: SimpleChanges) {
     if (changes['donutData'] && changes['donutData'].currentValue) {
       this.changeInsightsDonutData(changes['donutData'].currentValue);
     }
   }
+<<<<<<< HEAD
  
   ngOnInit() {
     this.getPriorityForDonut();
     this.getcontriPriorityForDonut();
  
+=======
+  
+  ngOnInit() {
+    this.getPriorityForDonut();
+    this.getcontriPriorityForDonut();
+
+>>>>>>> 73282603882894501fed6c2f202755a6ba940eb8
     this.tabularList.donutEdit.subscribe(()=>{
       this.getPriorityForDonut();
       this.getcontriPriorityForDonut();
     })
   }
+<<<<<<< HEAD
+=======
+  
+>>>>>>> 73282603882894501fed6c2f202755a6ba940eb8
   donutLegendSpanRemover(legend: any, value: any) {
     const s = legend.split('</span>');
     return s[0] + value + '%' + s[1];
@@ -65,7 +93,11 @@ export class DonutChartCardsComponent implements OnInit,OnChanges {
     this.donutCasename = event.casename;
     this.donutOpendate = event.opendate;
     this.donutStatus = event.status;
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> 73282603882894501fed6c2f202755a6ba940eb8
     let sum = Number(event.co2)+Number(event.h2o)+Number(event.o2)+Number(event.n2);
     let co2 =(((event.co2/sum))*100).toFixed(2);
     let h2o = (((event.h2o)/sum)*100).toFixed(2);

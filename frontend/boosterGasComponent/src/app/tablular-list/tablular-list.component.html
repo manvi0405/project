@@ -1,5 +1,5 @@
 <app-health-index-card [donutData]="donutData"></app-health-index-card>
-<app-donut-chart-cards [donutData]="donutData"></app-donut-chart-cards>
+<app-donut-chart-cards [donutData]="donutData" ></app-donut-chart-cards>
 <div>
   <bh-tabular-list
     id="sb--bh-tabular-list--small"
@@ -16,15 +16,21 @@
   >
   </bh-tabular-list>
 </div>
-
+ 
 <app-form-for-case-details
     (onCloseModal)="closeModalOfTable()"
     (resetModal)="resetModal()"
     (caseAddedOrEditedOrDelete)="caseAddedOrEditedOrDelete()"
+<<<<<<< HEAD
     [isOpen]="isOpen" 
     [formAddOrEdit]="formAddOrEdit" 
+=======
+    [isOpen]="isOpen"
+    [formAddOrEdit]="formAddOrEdit"
+>>>>>>> 73282603882894501fed6c2f202755a6ba940eb8
     [valuesToBeEnteredInFormForEdit]="valuesToBeEnteredInFormForEdit"
     [idForEdit]="idForEdit"
     
     >
 </app-form-for-case-details>
+ 

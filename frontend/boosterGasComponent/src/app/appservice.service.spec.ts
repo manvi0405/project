@@ -8,6 +8,7 @@ import { of } from 'rxjs';
 describe('AppserviceService', () => {
   let service: AppserviceService;
   let httpMock: HttpTestingController;
+<<<<<<< HEAD
  
  
   beforeEach(() => {
@@ -24,12 +25,34 @@ describe('AppserviceService', () => {
     });
  
  
+=======
+  
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [AppserviceService]
+    });
+    service = TestBed.inject(AppserviceService); 
+    httpMock = TestBed.inject(HttpTestingController); 
+    });
+    afterEach(() => {
+      httpMock.verify();
+    });
+
+
+>>>>>>> 73282603882894501fed6c2f202755a6ba940eb8
     it('should be created', () => { //this is a spec which contains many expectations
       console.log("test case 1")
       expect(service).toBeTruthy(); //means the instance of the class is created and is truthy
     });
+<<<<<<< HEAD
  
    
+=======
+
+    
+>>>>>>> 73282603882894501fed6c2f202755a6ba940eb8
   //we define the response to be returned and if it is returned the api is tested
     it('should return getall',(done)=>{
       const res = [
@@ -77,9 +100,15 @@ describe('AppserviceService', () => {
       // expect(httpClientSpy.get).toHaveBeenCalledTimes(1);
       // expect(httpClientSpy.get).toHaveBeenCalledWith(url);
     })
+<<<<<<< HEAD
  
  
  
+=======
+
+
+
+>>>>>>> 73282603882894501fed6c2f202755a6ba940eb8
     it('should return getinsights',(done)=>{
       const res = [
         {
@@ -92,7 +121,11 @@ describe('AppserviceService', () => {
           "h2o": 28.57,
           "o2": 42.86,
           "n2": 14.29,
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> 73282603882894501fed6c2f202755a6ba940eb8
       },
       {
           "casename": "case 7",
@@ -104,7 +137,11 @@ describe('AppserviceService', () => {
           "h2o": 45.65,
           "o2": 23.91,
           "n2": 4.35,
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> 73282603882894501fed6c2f202755a6ba940eb8
       },
     ]
       const id = 3;
@@ -119,7 +156,11 @@ describe('AppserviceService', () => {
           error:error =>console.log(error)
         }
       );
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> 73282603882894501fed6c2f202755a6ba940eb8
       const req = httpMock.expectOne(url);
       expect(req.request.method).toBe('GET');
       req.flush(res);
@@ -131,7 +172,11 @@ describe('AppserviceService', () => {
       let casename = 'case 3'
       const res = [{"casename": "case 15", "co2": 14.29, "contributing": "contributing", "h2o": 28.57, "n2": 14.29, "o2": 42.86, "opendate": "2024-12-05", "priority": "Medium", "status": "Open", "statuskey": "success", "type": "General"}, {"casename": "case 7", "co2": 26.09, "contributing": "contributing", "h2o": 45.65, "n2": 4.35, "o2": 23.91, "opendate": "2024-12-25", "priority": "High", "status": "Open", "statuskey": "success", "type": "General"}]
       const url = `http://localhost:3000/api/cases/fetchId/${casename}`;
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> 73282603882894501fed6c2f202755a6ba940eb8
       // jest.spyOn(httpClientSpy,'get').mockReturnValue(of(res)); //of() is used to convert the response into an observable as the api responds with an observable
       service.getId(casename).subscribe(
         {
@@ -311,7 +356,11 @@ describe('AppserviceService', () => {
     const id = 10;
     const res = "Updated Data"
     const url = `http://localhost:3000/api/cases/updateCases/${id}`
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> 73282603882894501fed6c2f202755a6ba940eb8
     // jest.spyOn(httpClientSpy, 'put').mockReturnValue(of(result))
     service.putCases(id, command).subscribe(
       {
@@ -347,6 +396,7 @@ describe('AppserviceService', () => {
       expect(req.request.method).toBe('DELETE');
       req.flush(res);
   })
+<<<<<<< HEAD
  
   it('should test the priority count',(done)=>{
     const url = 'http://localhost:3000/api/cases/priority';
@@ -369,6 +419,30 @@ describe('AppserviceService', () => {
      
   }]
  
+=======
+
+  it('should test the priority count',(done)=>{
+    const url = 'http://localhost:3000/api/cases/priority';
+    const errorMessage = "error while fetching priority count";
+    const res = [{
+      priority: "High",
+      total_count: "5",
+      contributing_count: "3"
+  },
+  {
+      priority: "Medium",
+      total_count: "6",
+      contributing_count: "5"
+      
+  },
+  {
+      priority: "Low",
+      total_count: "4",
+      contributing_count: "3"
+      
+  }]
+ 
+>>>>>>> 73282603882894501fed6c2f202755a6ba940eb8
     service.priority().subscribe(
       {
         next:data=>{
@@ -385,7 +459,19 @@ describe('AppserviceService', () => {
     const req = httpMock.expectOne(url);
     expect(req.request.method).toBe('GET');
     req.flush(res);
+<<<<<<< HEAD
  
   })
  
 });
+=======
+
+  })
+ 
+});
+
+  
+
+  
+
+>>>>>>> 73282603882894501fed6c2f202755a6ba940eb8

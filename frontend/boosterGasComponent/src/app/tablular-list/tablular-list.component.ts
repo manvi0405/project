@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, Output, EventEmitter, OnChanges, Input } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, Output, EventEmitter, OnChanges, Input, output } from '@angular/core';
 import { ComponentLibraryModule } from '@bh-digitalsolutions/ui-toolkit-angular/dist';
 import { AppserviceService } from '../appservice.service';
 import { CommonModule } from '@angular/common';
@@ -8,8 +8,8 @@ import { FormForCaseDetailsComponent } from './form-for-case-details/form-for-ca
 import moment from 'moment';
 import { DonutChartCardsComponent } from '../donut-chart-cards/donut-chart-cards.component';
 import { HealthIndexCardComponent } from "../health-index-card/health-index-card.component";
-
-
+ 
+ 
 @Component({
   selector: 'app-tablular-list',
   standalone: true,
@@ -22,7 +22,7 @@ import { HealthIndexCardComponent } from "../health-index-card/health-index-card
 ],
   templateUrl: './tablular-list.component.html',
   styleUrl: './tablular-list.component.css',
-  providers: [AppserviceService]
+  providers: [AppserviceService] 
 })
 export class TablularListComponent implements OnInit{
   formAddOrEdit: string = '';
@@ -39,11 +39,12 @@ export class TablularListComponent implements OnInit{
   h2o!: number | null;
   o2!: number | null;
   n2!: number | null;
-  validCasenameInEdit: string = '';   
+  validCasenameInEdit: string = '';  
   editContributing!: boolean;
   idForEdit: any;
   valuesToBeEnteredInFormForEdit: any = {}
   tableAllOrContri: string = 'contributing';
+<<<<<<< HEAD
   result: any = {};
   
 //   tableData: { id: number, name: string }[] = [
@@ -54,22 +55,31 @@ export class TablularListComponent implements OnInit{
 ngOnInit(): void {
     this.getAllAndContri()
     
-}
+=======
+  donutData: any;
+ 
+  @Output() dataToDonutChart = new EventEmitter<any>(); 
+  @Output() donutEdit = new EventEmitter();
 
+
+  result: any;
+ 
+  updateDonutChart(data:any) {
+    // console.log("data",data);
+    this.donutData = data;
+  }
+
+ngOnInit(): void {
+    this.getAllAndContri()
+>>>>>>> 73282603882894501fed6c2f202755a6ba940eb8
+}
+ 
 constructor(private service: AppserviceService){
-  
+ 
 }
+ 
 
-// ngOnChanges(){
-//   if (this.tableAllOrContri === 'contributing') {
-//         console.log("###3");
-//         this.getContri();
-//       } else {
-//         console.log("@@@");
-//         this.getAll();
-//       }
-// }
-
+ 
 @Input() tableSchema: any = [
   {
     label: 'Case Name',
@@ -142,14 +152,14 @@ constructor(private service: AppserviceService){
       ],
     },
   };
-
+ 
   closeModalOfTable(){
     console.log("close modal in tabular list");
     this.isOpen = false;
   }
-
+ 
   filterCases(event: any) { //called only when the action menu options are selected
-    //differentiate for contri cases in tebular liast header
+    //differentiate for contri cases in tabular liast header
     //here the row select runs
     console.log("bheventchange", event);
     if (event.detail.label === 'Contributing Cases') {
@@ -159,12 +169,19 @@ constructor(private service: AppserviceService){
       this.tableAllOrContri = 'all';
       this.getAllAndContri()
     }
+<<<<<<< HEAD
   }
 
+=======
+    
+  }
+ 
+>>>>>>> 73282603882894501fed6c2f202755a6ba940eb8
   addCase(event: any){
     console.log("addcasebutton", event);
     if (event.detail === 'example-bhtl--cta-primary') {
       this.formAddOrEdit = 'Add';
+<<<<<<< HEAD
       // this.resetDate = false;
       this.isOpen = true; //send this value to the modal component to open the form
       console.log("isOpen: ", this.isOpen, this.formAddOrEdit);  
@@ -172,6 +189,15 @@ constructor(private service: AppserviceService){
     }
   }
 
+=======
+      this.resetDate = false;
+      this.isOpen = true; //send this value to the modal component to open the form
+      console.log("isOpen: ", this.isOpen, this.formAddOrEdit);  
+         
+    }
+  }
+ 
+>>>>>>> 73282603882894501fed6c2f202755a6ba940eb8
   selectEditOrDelete(event: any){
     // this.donutEdit = true;
     console.log("selecteditordelet tabular list", event);
@@ -179,6 +205,11 @@ constructor(private service: AppserviceService){
     this.dataToDonutChart.emit(event.detail.item)
     if (event.detail.payload?.label === 'Edit') {
       this.formAddOrEdit = 'Edit';
+<<<<<<< HEAD
+=======
+      this.resetDate = false;
+      
+>>>>>>> 73282603882894501fed6c2f202755a6ba940eb8
       //putting all values in the form modal variable
       this.valuesToBeEnteredInFormForEdit = {
         "casename" : event.detail.item.casename,
@@ -196,6 +227,7 @@ constructor(private service: AppserviceService){
       this.isOpen = true;
       this.service.getId(event.detail.item.casename).subscribe({
           error: (err) => {
+            console.log(err);
           },
           next: (res: any) => {
             this.idForEdit = res;
@@ -216,7 +248,11 @@ constructor(private service: AppserviceService){
       });
     }
   }
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> 73282603882894501fed6c2f202755a6ba940eb8
   getAllAndContri(){
     this.service.getAllAndContri().subscribe({
       error: (err) => {
@@ -235,11 +271,32 @@ constructor(private service: AppserviceService){
             length: res.length,
           };
         }
+<<<<<<< HEAD
         
       },
     });
   }
 
+=======
+       
+      },
+    });
+  }
+ 
+  // getContri(){
+  //   this.service.getContri().subscribe({
+  //     error: (err) => {
+  //     },
+  //     next: (res: any) => {
+  //       this.tableData = {
+  //         data: res,
+  //         length: res.length,
+  //       };
+  //     },
+  //   });
+  // }
+ 
+>>>>>>> 73282603882894501fed6c2f202755a6ba940eb8
   deleteCases(id: number) {
     const isDelete = confirm("Are you sure you want to delete?");
     if(isDelete){
@@ -248,13 +305,26 @@ constructor(private service: AppserviceService){
         },
         next: (res: any) => {
           this.result = res;
+<<<<<<< HEAD
           this.getAllAndContri()
           this.donutEdit.emit();
+=======
+          this.getAllAndContri();
+          this.donutEdit.emit();
+          // this.donutEdit.emit()
+          // if (this.tableAllOrContri === 'contributing') {
+          //   this.getContri();
+          // } else {
+          //   this.getAll();
+          // }
+          // this.getPriorityForDonut();
+          // this.getcontriPriorityForDonut();
+>>>>>>> 73282603882894501fed6c2f202755a6ba940eb8
         },
       });
     }
   }
-
+ 
   resetModal(){
     this.valuesToBeEnteredInFormForEdit = {
       "casename" : '',
@@ -268,11 +338,24 @@ constructor(private service: AppserviceService){
       "n2" : null
     }
   }
-
+ 
   caseAddedOrEditedOrDelete(){
     //case is added, edited or deleted so....
+<<<<<<< HEAD
     this.getAllAndContri()
     this.donutEdit.emit();
     this.resetModal()
+=======
+    // if (this.tableAllOrContri === 'contributing') {
+    //   this.getContri();
+    // } else if (this.tableAllOrContri === 'all') {
+    //   this.getAll();
+    // }
+    this.resetModal()
+    this.donutEdit.emit();
+    this.getAllAndContri()
+>>>>>>> 73282603882894501fed6c2f202755a6ba940eb8
   }
 }
+ 
+ 
