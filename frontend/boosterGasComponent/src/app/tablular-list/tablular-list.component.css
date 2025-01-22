@@ -1,0 +1,8 @@
+::ng-deep .bh-tabular-list__container{
+    border: var(--effect-border-width-regular) solid var(--color-border-common-primary);
+    border-radius: var(--effect-border-radius-medium);
+    background-color: var(--color-fill-common-secondary);
+    overflow: visible;
+    margin-top: 15px;
+    position: relative;
+}

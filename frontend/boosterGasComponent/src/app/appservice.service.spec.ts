@@ -1,102 +1,38 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { AppserviceService } from './appservice.service';
-import { provideHttpClient } from '@angular/common/http';
+import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
 // import {contriCases} from './mockData/cases.ts'
-
-describe('AppserviceService', () => { 
+ 
+describe('AppserviceService', () => {
   let service: AppserviceService;
-  // const httpTesting = TestBed.inject(HttpTestingController);
-  let httpClientSpy: any;
-
-  beforeEach(() => {//runs befor every it() which is called a spec
-    httpClientSpy = {
-      get: jest.fn(), //create a mock function for the get call (api of http client and not the function name)
-      post: jest.fn(),
-      put: jest.fn(),
-      delete: jest.fn()
-    }
-    service = new AppserviceService(httpClientSpy);  
-    // TestBed.configureTestingModule({
-    //   providers: [provideHttpClient(), provideHttpClientTesting()] //used to import service dependencies
+  let httpMock: HttpTestingController;
+ 
+ 
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      // imports: [HttpClientTestingModule],
+      providers: [AppserviceService]
+    });
+    service = TestBed.inject(AppserviceService);
+    httpMock = TestBed.inject(HttpTestingController);
     });
     
-    // service = TestBed.inject(AppserviceService)
-    // const fixture = TestBed.createComponent(AppserviceService);
-    // const app = fixture.debugElement.componentInstance;
-    // expect(app.title).toEqual('');
-
-
+    afterEach(() => {
+      httpMock.verify();
+    });
+ 
+ 
     it('should be created', () => { //this is a spec which contains many expectations
       console.log("test case 1")
       expect(service).toBeTruthy(); //means the instance of the class is created and is truthy
     });
-
-    const res = [
-      {
-        "casename": "case 15",
-        "priority": "Medium",
-        "type": "General",
-        "status": "Open",
-        "opendate": "2024-12-05",
-        "co2": 14.29,
-        "h2o": 28.57,
-        "o2": 42.86,
-        "n2": 14.29,
-        "statuskey": "success",
-        "contributing": "contributing"
-    },
-    {
-        "casename": "case 7",
-        "priority": "High",
-        "type": "General",
-        "status": "Open",
-        "opendate": "2024-12-25",
-        "co2": 26.09,
-        "h2o": 45.65,
-        "o2": 23.91,
-        "n2": 4.35,
-        "statuskey": "success",
-        "contributing": "contributing"
-    },
-  ];
-    
+ 
+   
   //we define the response to be returned and if it is returned the api is tested
     it('should return getall',(done)=>{
-      const url = "http://localhost:3000/api/fetchAll";
-      jest.spyOn(httpClientSpy,'get').mockReturnValue(of(res)); //of() is used to convert the response into an observable as the api responds with an observable
-      service.getAll().subscribe(
-        {
-          next:data=>{
-            expect(data).toEqual(res);
-            done();
-          },
-          error:error =>console.log(error)
-        }
-      );
-      expect(httpClientSpy.get).toHaveBeenCalledTimes(1);
-      expect(httpClientSpy.get).toHaveBeenCalledWith(url);
-    })
-
-    it('should return getcontri',(done)=>{
-      const url = "http://localhost:3000/api/fetchContri";
-      jest.spyOn(httpClientSpy,'get').mockReturnValue(of(res)); //of() is used to convert the response into an observable as the api responds with an observable
-      service.getContri().subscribe(
-        {
-          next:data=>{
-            expect(data).toEqual(res);
-            done();
-          },
-          error:error =>console.log(error)
-        }
-      );
-      expect(httpClientSpy.get).toHaveBeenCalledTimes(1);
-      expect(httpClientSpy.get).toHaveBeenCalledWith(url);
-    })
-
-    it('should return getinsights',(done)=>{
-      const result = [
+      const res = [
         {
           "casename": "case 15",
           "priority": "Medium",
@@ -123,46 +59,98 @@ describe('AppserviceService', () => {
           "statuskey": "success",
           "contributing": "contributing"
       },
-    ]
-      const id = 3;
-      const url = `http://localhost:3000/api/fetchinsights/${id}`;
-      jest.spyOn(httpClientSpy,'get').mockReturnValue(of(result)); //of() is used to convert the response into an observable as the api responds with an observable
-      service.insights(id).subscribe(
+    ];
+      const url = "http://localhost:3000/api/cases/fetchAll";
+      // jest.spyOn(httpClientSpy,'get').mockReturnValue(of(res)); //of() is used to convert the response into an observable as the api responds with an observable
+      service.getAllAndContri().subscribe(
         {
           next:data=>{
-            expect(data).toEqual(result);
+            expect(data).toEqual(res);
             done();
           },
           error:error =>console.log(error)
         }
       );
-      expect(httpClientSpy.get).toHaveBeenCalledTimes(1);
-      expect(httpClientSpy.get).toHaveBeenCalledWith(url);
+      const req = httpMock.expectOne(url);
+      expect(req.request.method).toBe('GET');
+      req.flush(res);
+      // expect(httpClientSpy.get).toHaveBeenCalledTimes(1);
+      // expect(httpClientSpy.get).toHaveBeenCalledWith(url);
+    })
+ 
+ 
+ 
+    it('should return getinsights',(done)=>{
+      const res = [
+        {
+          "casename": "case 15",
+          "priority": "Medium",
+          "type": "General",
+          "status": "Open",
+          "opendate": "2024-12-05",
+          "co2": 14.29,
+          "h2o": 28.57,
+          "o2": 42.86,
+          "n2": 14.29,
+ 
+      },
+      {
+          "casename": "case 7",
+          "priority": "High",
+          "type": "General",
+          "status": "Open",
+          "opendate": "2024-12-25",
+          "co2": 26.09,
+          "h2o": 45.65,
+          "o2": 23.91,
+          "n2": 4.35,
+ 
+      },
+    ]
+      const id = 3;
+      const url = `http://localhost:3000/api/cases/fetchinsights/${id}`;
+      // jest.spyOn(httpClientSpy,'get').mockReturnValue(of(res)); //of() is used to convert the response into an observable as the api responds with an observable
+      service.insights(id).subscribe(
+        {
+          next:data=>{
+            expect(data).toEqual(res);
+            done();
+          },
+          error:error =>console.log(error)
+        }
+      );
+ 
+      const req = httpMock.expectOne(url);
+      expect(req.request.method).toBe('GET');
+      req.flush(res);
+      // expect(httpClientSpy.get).toHaveBeenCalledTimes(1);
+      // expect(httpClientSpy.get).toHaveBeenCalledWith(url);
     })
    
     it('should return getid',(done)=>{
       let casename = 'case 3'
-      const result = [{"casename": "case 15", "co2": 14.29, "contributing": "contributing", "h2o": 28.57, "n2": 14.29, "o2": 42.86, "opendate": "2024-12-05", "priority": "Medium", "status": "Open", "statuskey": "success", "type": "General"}, {"casename": "case 7", "co2": 26.09, "contributing": "contributing", "h2o": 45.65, "n2": 4.35, "o2": 23.91, "opendate": "2024-12-25", "priority": "High", "status": "Open", "statuskey": "success", "type": "General"}]
-      const url = `http://localhost:3000/api/fetchId/${casename}`;
-
-      jest.spyOn(httpClientSpy,'get').mockReturnValue(of(result)); //of() is used to convert the response into an observable as the api responds with an observable
+      const res = [{"casename": "case 15", "co2": 14.29, "contributing": "contributing", "h2o": 28.57, "n2": 14.29, "o2": 42.86, "opendate": "2024-12-05", "priority": "Medium", "status": "Open", "statuskey": "success", "type": "General"}, {"casename": "case 7", "co2": 26.09, "contributing": "contributing", "h2o": 45.65, "n2": 4.35, "o2": 23.91, "opendate": "2024-12-25", "priority": "High", "status": "Open", "statuskey": "success", "type": "General"}]
+      const url = `http://localhost:3000/api/cases/fetchId/${casename}`;
+ 
+      // jest.spyOn(httpClientSpy,'get').mockReturnValue(of(res)); //of() is used to convert the response into an observable as the api responds with an observable
       service.getId(casename).subscribe(
         {
           next:data=>{
-            expect(data).toEqual(result);
+            expect(data).toEqual(res);
             done();
           },
           error:error =>console.log(error)
         }
       );
-      expect(httpClientSpy.get).toHaveBeenCalledTimes(1);
-      expect(httpClientSpy.get).toHaveBeenCalledWith(url);
+      const req = httpMock.expectOne(url);
+      expect(req.request.method).toBe('GET');
+      req.flush(res);
     })
-
+ 
     it("should validateCasename", (done)=>{
       let casename = "case 3"
-      const url = `http://localhost:3000/api/validateCasename/${casename}`;
-      let result = {
+      const url = `http://localhost:3000/api/cases/validateCasename/${casename}`;
+      let res = {
         "command": "SELECT",
         "rowCount": 1,
         "oid": null,
@@ -260,20 +248,21 @@ describe('AppserviceService', () => {
             "casename": null
         }
     }
-    jest.spyOn(httpClientSpy,'get').mockReturnValue(of(result));
+    // jest.spyOn(httpClientSpy,'get').mockReturnValue(of(result));
     service.validateCasename(casename).subscribe(
       {
         next:data=>{
-          expect(data).toEqual(result);
+          expect(data).toEqual(res);
           done();
         },
         error:error =>console.log(error)
       }
     );
-    expect(httpClientSpy.get).toHaveBeenCalledTimes(1);
-    expect(httpClientSpy.get).toHaveBeenCalledWith(url);
+    const req = httpMock.expectOne(url);
+      expect(req.request.method).toBe('GET');
+      req.flush(res);
   })
-
+ 
     it('should test postcases',(done)=>{
       const command = {  
       "casename": "case 7",
@@ -289,8 +278,8 @@ describe('AppserviceService', () => {
         "contributing": "contributing"
     }; //post this
       const res = "Posted Data";
-      const url = "http://localhost:3000/api/postCases";
-      jest.spyOn(httpClientSpy,'post').mockReturnValue(of(res));
+      const url = "http://localhost:3000/api/cases/postCases";
+      // jest.spyOn(httpClientSpy,'post').mockReturnValue(of(res));
       service.postCases(command).subscribe(
         {
           next:data=>{
@@ -300,10 +289,11 @@ describe('AppserviceService', () => {
           error:error =>console.log(error)
         }
       );
-      expect(httpClientSpy.post).toHaveBeenCalledTimes(1);
-      expect(httpClientSpy.post).toHaveBeenCalledWith(url,command);
+      const req = httpMock.expectOne(url);
+      expect(req.request.method).toBe('POST');
+      req.flush(res);
     })
-
+ 
     it("should test putCases", (done)=>{
       const command = {  
         "casename": "case 7",
@@ -319,105 +309,83 @@ describe('AppserviceService', () => {
         "contributing": "contributing"
     };//put this
     const id = 10;
-    const result = "Updated Data"
-    const url = `http://localhost:3000/api/updateCases/${id}`
-
-    jest.spyOn(httpClientSpy, 'put').mockReturnValue(of(result))
+    const res = "Updated Data"
+    const url = `http://localhost:3000/api/cases/updateCases/${id}`
+ 
+    // jest.spyOn(httpClientSpy, 'put').mockReturnValue(of(result))
     service.putCases(id, command).subscribe(
       {
         next:data=>{
           console.log("data: ",data);
-          expect(data).toEqual(result);
+          expect(data).toEqual(res);
           done();
         },
         error:error =>console.log(error)
       }
     );
-    expect(httpClientSpy.put).toHaveBeenCalledTimes(1);
-    expect(httpClientSpy.put).toHaveBeenCalledWith(url,command);
+    const req = httpMock.expectOne(url);
+      expect(req.request.method).toBe('PUT');
+      req.flush(res);
   })
-
+ 
   it('should test delete cases',(done)=>{
     const id = 3;
-    const url = `http://localhost:3000/api/deleteCases/${id}`
-    const result = "Deleted Data"
-    jest.spyOn(httpClientSpy,'delete').mockReturnValue(of(result));
+    const url = `http://localhost:3000/api/cases/deleteCases/${id}`
+    const res = "Deleted Data"
+    // jest.spyOn(httpClientSpy,'delete').mockReturnValue(of(result));
     service.deleteCases(id).subscribe(
       {
         next:data=>{
           console.log("data: ",data);
-          expect(data).toEqual(result);
+          expect(data).toEqual(res);
           done();
         },
         error:error =>console.log(error)
       }
     );
-    expect(httpClientSpy.delete).toHaveBeenCalled();
-    expect(httpClientSpy.delete).toHaveBeenCalledWith(url);
+    const req = httpMock.expectOne(url);
+      expect(req.request.method).toBe('DELETE');
+      req.flush(res);
   })
-
-  it('should test the priority count',(done)=>{
-    const url = 'http://localhost:3000/api/priority';
-    const res = [{
-      priority: 'Medium',
-      count:'2'
-    },
-    {
-      priority: 'High',
-      count:'1'
-    },
-    {
-      priority: 'Low',
-      count:'1'
-    }]
  
-    jest.spyOn(httpClientSpy,'get').mockReturnValue(of(res));
+  it('should test the priority count',(done)=>{
+    const url = 'http://localhost:3000/api/cases/priority';
+    const errorMessage = "error while fetching priority count";
+    const res = [{
+      priority: "High",
+      total_count: "5",
+      contributing_count: "3"
+  },
+  {
+      priority: "Medium",
+      total_count: "6",
+      contributing_count: "5"
+     
+  },
+  {
+      priority: "Low",
+      total_count: "4",
+      contributing_count: "3"
+     
+  }]
+ 
     service.priority().subscribe(
       {
         next:data=>{
           expect(data).toEqual(res);
           done();
         },
-        error:error =>console.log(error)
-      }
-    );
- 
-    expect(httpClientSpy.get).toHaveBeenCalled();
-    expect(httpClientSpy.get).toHaveBeenCalledWith(url);
-  })
- 
-  it('should test the Contributing priority count',(done)=>{
-    const url = 'http://localhost:3000/api/contriPriority';
-    const res = [{
-      priority: 'Medium',
-      count:'2'
-    },
-    {
-      priority: 'High',
-      count:'1'
-    },
-    {
-      priority: 'Low',
-      count:'1'
-    }]
- 
-    jest.spyOn(httpClientSpy,'get').mockReturnValue(of(res));
-    service.contributingpriority().subscribe(
-      {
-        next:data=>{
-          expect(data).toEqual(res);
+        error:error =>{
+          console.log(error);
+          expect(error).toEqual(errorMessage);
           done();
-        },
-        error:error =>console.log(error)
+        }
       }
     );
+    const req = httpMock.expectOne(url);
+    expect(req.request.method).toBe('GET');
+    req.flush(res);
  
-    expect(httpClientSpy.get).toHaveBeenCalled();
-    expect(httpClientSpy.get).toHaveBeenCalledWith(url);
   })
+ 
 });
-
-  
-
-  
-

@@ -102,3 +102,8 @@ gap: 5px;
     height: 60%;
     padding-left: 10%;
   }
+
+  .bh-donut-chart.horizontal {
+    display: flex;
+    padding-top: 16px;
+}

@@ -25,8 +25,6 @@ export class FormForCaseDetailsComponent implements OnChanges {
   
   }
 
-  
-
   casename: string = '';
   status: string = '';
   priority: string = '';
@@ -51,6 +49,7 @@ export class FormForCaseDetailsComponent implements OnChanges {
   validN2: string | undefined = '';
   result: any;
   tableAllOrContri: string = '';
+  
   
   inputCases: any = {};
   
@@ -104,7 +103,7 @@ export class FormForCaseDetailsComponent implements OnChanges {
       if (event.detail.trim() != '') {
         this.co2 = event.detail;
         this.errorCo2 = false;
-        // this.validCo2 = this.validateInsights(this.co2);
+        this.validCo2 = this.validateInsights(this.co2);
       } else {
         this.errorCo2 = true;
       }
@@ -112,7 +111,7 @@ export class FormForCaseDetailsComponent implements OnChanges {
       if (event.detail.trim() != '') {
         this.h2o = event.detail;
         this.errorH2o = false;
-        // this.validH2o = this.validateInsights(this.h2o);
+        this.validH2o = this.validateInsights(this.h2o);
       } else {
         this.errorH2o = true;
       }
@@ -120,7 +119,7 @@ export class FormForCaseDetailsComponent implements OnChanges {
       if (event.detail.trim() != '') {
         this.o2 = event.detail;
         this.errorO2 = false;
-        // this.validO2 = this.validateInsights(this.o2);
+        this.validO2 = this.validateInsights(this.o2);
       } else {
         this.errorO2 = true;
       }
@@ -128,7 +127,7 @@ export class FormForCaseDetailsComponent implements OnChanges {
       if (event.detail.trim() != '') {
         this.n2 = event.detail;
         this.errorN2 = false;
-        // this.validN2 = this.validateInsights(this.n2);
+        this.validN2 = this.validateInsights(this.n2);
       } else {
         this.errorN2 = true;
       }
@@ -237,7 +236,7 @@ export class FormForCaseDetailsComponent implements OnChanges {
     else {
       // this.sortTableBasedOnUpdatedData(this.inputCases, this.casename);
       this.updateCases(this.idForEdit[0].casenumber, this.inputCases);
-      this.resetForm();
+
       alert("Case Updated")
       this.isOpen = false;
       this.caseAddedOrEditedOrDelete.emit()
@@ -249,9 +248,11 @@ export class FormForCaseDetailsComponent implements OnChanges {
   updateCases(id: number, data: any){
     this.service.putCases(id, data).subscribe({
       error: (err) => {
+        console.log("err upddate", err)
       },
       next: (res: any) => {
         this.result = res;
+        console.log("update: ", this.result);
       },
     });
   }
@@ -321,6 +322,7 @@ export class FormForCaseDetailsComponent implements OnChanges {
         },
       ];
     }
+    
   }
 
   validateInsights(value: number | null) {
@@ -350,7 +352,7 @@ export class FormForCaseDetailsComponent implements OnChanges {
     return new Promise((resolve) => {
       this.service.validateCasename(casename).subscribe((value: any) => { //resolve callback used to resolve (sucessful) result and reject to reject the promise(in case of error)
         this.result = value;
-        if (this.result.rowCount == 1) {
+        if (this.result.length == 1) {
           this.validCasename = `${casename} already exists`;
         }
         resolve(this.validCasename); //resolve used to provide the result or value 

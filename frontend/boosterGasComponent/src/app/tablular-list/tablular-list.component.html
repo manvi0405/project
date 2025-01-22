@@ -1,3 +1,5 @@
+<app-health-index-card [donutData]="donutData"></app-health-index-card>
+<app-donut-chart-cards [donutData]="donutData"></app-donut-chart-cards>
 <div>
   <bh-tabular-list
     id="sb--bh-tabular-list--small"
@@ -6,20 +8,23 @@
     header='{"label":"Cases","actionMenu":{"menuItems":{"itemGroups":[{"items":[{"label":"Contributing Cases","value":"tearsheet--bh-menu--item-Contributing Cases"},{"label":"All Cases","value":"tearsheet--bh-menu--item-All Cases"}],"divider":false}]}},"ctas":{"type":"primary","label":"Add","key":"example-bhtl--cta-primary"}}'
     [schema]="tableSchema"
     [payload]="tableData"
-    [option]='tabularListOption'
-    (bhEventChange)="filterCases($event)" (bhEventCtaClick)="addCase($event)" (bhEventSelected)="selectEditOrDelete($event)"
-    >                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+    [option]="tabularListOption"
+    (bhEventChange)="filterCases($event)"
+    (bhEventCtaClick)="addCase($event)"
+    (bhEventSelected)="selectEditOrDelete($event)"
+    (dataToDonutChart)="updateDonutChart($event)"
+  >
   </bh-tabular-list>
 </div>
 
-  <app-form-for-case-details 
-    (onCloseModal)="closeModalOfTable()" 
+<app-form-for-case-details
+    (onCloseModal)="closeModalOfTable()"
     (resetModal)="resetModal()"
     (caseAddedOrEditedOrDelete)="caseAddedOrEditedOrDelete()"
     [isOpen]="isOpen" 
     [formAddOrEdit]="formAddOrEdit" 
     [valuesToBeEnteredInFormForEdit]="valuesToBeEnteredInFormForEdit"
     [idForEdit]="idForEdit"
+    
     >
-  </app-form-for-case-details>
-
+</app-form-for-case-details>

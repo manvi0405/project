@@ -22,49 +22,49 @@ export class AppserviceService {
   
   baseURL: String = 'http://localhost:3000/api/cases'
 
-  getContri(){
-    console.log(this.headers)
-    return this.http.get(this.baseURL+'/fetchContri', this.headers); 
-  }
+  // getContri(){
+  //   console.log(this.headers)
+  //   return this.http.get(this.baseURL+'/fetchContri', {'headers': this.headers}); 
+  // }
 
-  getAll(){
-    return this.http.get(this.baseURL+'/fetchAll')
+  getAllAndContri(){
+    return this.http.get(this.baseURL+'/fetchAll', {'headers': this.headers})
   }
 
   validateCasename(casename: string){
     console.log("service validate casename")
-    return this.http.get(this.baseURL + `/validateCasename/${casename}`)
+    return this.http.get(this.baseURL + `/validateCasename/${casename}`, {'headers': this.headers})
   }
 
   getId(casename: string){
     console.log("getId sevices")
-    return this.http.get(this.baseURL+`/fetchId/${casename}`)
+    return this.http.get(this.baseURL+`/fetchId/${casename}`, {'headers': this.headers})
   }
 
   priority(){
-    return this.http.get(this.baseURL+`/priority`)
+    return this.http.get(this.baseURL+`/priority`, {'headers': this.headers})
   }
  
   contributingpriority(){
-    return this.http.get(this.baseURL+'/contriPriority')
+    return this.http.get(this.baseURL+'/contriPriority', {'headers': this.headers})
   }
  
   insights(id: number){
-    return this.http.get(this.baseURL+`/fetchinsights/${id}`)
+    return this.http.get(this.baseURL+`/fetchinsights/${id}`, {'headers': this.headers})
   }
 
   postCases(value: any){
     console.log('post data services')
-    return this.http.post(this.baseURL+'/postCases', value);
+    return this.http.post(this.baseURL+'/postCases', value, {'headers': this.headers});
   }
 
   putCases(id: number, value: any){
     console.log('put data');
-    return this.http.put(this.baseURL+`/updateCases/${id}`, value)
+    return this.http.put(this.baseURL+`/updateCases/${id}`, value, {'headers': this.headers})
   }
 
   deleteCases(id: number){
     console.log("delete data")
-    return this.http.delete(this.baseURL+`/deleteCases/${id}`)
+    return this.http.delete(this.baseURL+`/deleteCases/${id}`, {'headers': this.headers})
   }
 }
