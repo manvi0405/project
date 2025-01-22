@@ -46,6 +46,7 @@ export class DonutChartCardsComponent implements OnInit,OnChanges {
       this.getcontriPriorityForDonut();
     })
   }
+  
   donutLegendSpanRemover(legend: any, value: any) {
     const s = legend.split('</span>');
     return s[0] + value + '%' + s[1];
